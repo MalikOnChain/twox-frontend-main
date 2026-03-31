@@ -1,0 +1,105 @@
+/* styles/NativeGameItem.module.css */
+.casesImage {
+  scale: 1.151;
+  top: 57px;
+}
+
+.slotsImage {
+  scale: 1;
+  left: 8px;
+  top: 27px;
+}
+
+.liveCasinoImage {
+  scale: 1.23;
+  left: 0;
+  top: 42px;
+}
+
+.rouletteImage {
+  scale: 1.06;
+  rotate: 10.59deg;
+}
+
+.crashImage {
+  scale: 0.95;
+  rotate: -5deg;
+  top: 66px;
+  left: -9px;
+}
+
+.minesImage {
+  top: 36px;
+}
+
+.limboImage {
+  scale: 0.61;
+  rotate: 37.56deg;
+  bottom: -140px;
+  left: 6px;
+}
+
+.battlesImage {
+  scale: 0.8;
+  bottom: -50px;
+}
+
+.jackpotImage {
+  scale: 0.86;
+  bottom: 0;
+}
+
+.coinFlipImage {
+  scale: 1.24;
+  bottom: -5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .casesImage {
+    scale: 0.95;
+    top: 45px;
+  }
+
+  .liveCasinoImage {
+    scale: 1;
+    top: 35px;
+  }
+
+  .limboImage {
+    scale: 0.5;
+    rotate: 37.56deg;
+    top: -50px;
+  }
+
+  .crashImage {
+    top: 40px;
+    left: -9px;
+  }
+
+  .rouletteImage {
+    scale: 0.9;
+    rotate: 10.59deg;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .casesImage {
+    scale: 1.05;
+    top: 50px;
+  }
+
+  .limboImage {
+    scale: 0.55;
+    rotate: 37.56deg;
+    top: -60px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .limboImage {
+    scale: 0.58;
+    rotate: 37.56deg;
+    top: -65px;
+  }
+}
