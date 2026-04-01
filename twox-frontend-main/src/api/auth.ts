@@ -17,6 +17,7 @@ export interface AuthResponse {
   identifier?: string
   success?: boolean
   needsVerification?: boolean
+  token?: string
 }
 
 export interface FetchNonceResponse {
@@ -57,10 +58,12 @@ export const signUp = async (
   fingerprint?: { visitorId: string; fingerprintData?: any }
 ): Promise<AuthResponse> => {
   try {
+    const { phone, ...rest } = credentials
     const response = await api.post<AuthResponse>(
       '/auth/registration/register',
       {
-        ...credentials,
+        ...rest,
+        ...(phone ? { phoneNumber: phone } : {}),
         ...(fingerprint && {
           fingerprint: {
             visitorId: fingerprint.visitorId,
@@ -264,7 +267,7 @@ export const fetchWalletDepositNonce = async ({
 export const requestForgotPassword = async (email: string) => {
   try {
     const response = await api.post<AuthResponse>(
-      '/auth/registration/forgot_password',
+      '/auth/registration/forgot-password',
       { email }
     )
     return response.data
@@ -281,8 +284,8 @@ export interface VerifyOTPPayload {
 export const verifyOTP = async (payload: VerifyOTPPayload) => {
   try {
     const response = await api.post<AuthResponse>(
-      '/auth/registration/verify_code',
-      payload
+      '/auth/registration/verify-code',
+      { email: payload.email, code: payload.code }
     )
     return response.data
   } catch (error) {
@@ -316,8 +319,12 @@ export interface resetPasswordPayload {
 export const resetPassword = async (payload: resetPasswordPayload) => {
   try {
     const response = await api.post<AuthResponse>(
-      '/auth/registration/new_password',
-      payload
+      '/auth/registration/new-password',
+      {
+        email: payload.email,
+        code: payload.code,
+        password: payload.password,
+      }
     )
     return response.data
   } catch (error) {

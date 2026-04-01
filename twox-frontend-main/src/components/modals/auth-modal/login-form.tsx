@@ -54,12 +54,12 @@ const LoginForm = ({
       })
 
       if (response.identifier) {
-        checkAuth(response.identifier)
+        await checkAuth(response.identifier)
         onSuccess()
+      } else if (response.success === false && response.error) {
+        toast.error(response.error)
       } else {
-        if (!response.success) {
-          toast.error(response.error)
-        }
+        toast.error('Sign in failed. Please try again.')
       }
     } catch (error) {
       if (error instanceof Error) {

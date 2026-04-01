@@ -14,6 +14,7 @@ import 'react-phone-number-input/style.css'
 import { resendVerificationEmail, signUp } from '@/api/auth'
 
 import { useFingerprint } from '@/context/fingerprint-context'
+import { useUser } from '@/context/user-context'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,6 +23,7 @@ import { RegisterFormValues, registerSchema } from '@/schema/auth'
 
 const RegisterForm = ({
   onSignIn,
+  onSuccess,
 }: {
   onSignIn: () => void
   onSuccess: () => void
@@ -32,6 +34,7 @@ const RegisterForm = ({
   const [countdown, setCountdown] = useState(0)
   const [checked, setChecked] = useState(false)
   const { t } = useTranslation()
+  const { checkAuth } = useUser()
   const { visitorId, fingerprintData } = useFingerprint()
   const {
     register,
@@ -99,18 +102,22 @@ const RegisterForm = ({
         fingerprintData,
       })
 
-      setNeedsVerification(true)
-      setVerificationEmail(data.email)
-
-      toast.success(response?.message || 'Account created successfully')
       sendGTMEvent({
         event: 'signup_success',
         utm_source: utmSource || '',
         utm_campaign: utmCampaign || '',
         debug_mode: process.env.NODE_ENV === 'development',
       })
-      // onSuccess()
-      // }
+
+      if (response?.identifier) {
+        await checkAuth(response.identifier)
+        onSuccess()
+        return
+      }
+
+      setNeedsVerification(true)
+      setVerificationEmail(data.email)
+      toast.success(response?.message || 'Account created. Please verify your email.')
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
