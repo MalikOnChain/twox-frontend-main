@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
-import Logo from '@/assets/brand/logo.webp'
+import { MainLogo as Logo } from '@/lib/logo'
 
 import { GamePlayMode, ProviderGameType, TProviderGameType } from '@/types/game'
 

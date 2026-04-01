@@ -1,8 +1,9 @@
 import { X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
-// Import API utilities
 import { getSpinResult, getWheelBonuses } from '@/api/wheel'
+
+import wheelModalBg from '@/assets/auth-bg.png'
 
 import { useUser } from '@/context/user-context'
 
@@ -82,7 +83,10 @@ const WheelModal: React.FC<WheelModalProps> = ({ open, onOpenChange }) => {
       onRequestClose={() => onOpenChange(false)}
       contentLabel='Wheel of Fortune'
     >
-      <div className='relative border bg-[url(/background/bg-compose.jpeg)] bg-cover bg-center bg-no-repeat p-3.5 shadow-sm shadow-cyan-50 md:w-[930px]'>
+      <div
+        className='relative border bg-cover bg-center bg-no-repeat p-3.5 shadow-sm shadow-cyan-50 md:w-[930px]'
+        style={{ backgroundImage: `url(${wheelModalBg.src})` }}
+      >
         <button
           className='absolute right-5 top-1 rounded-[10px] p-2 md:right-2.5 md:top-2.5'
           onClick={() => onOpenChange(false)}

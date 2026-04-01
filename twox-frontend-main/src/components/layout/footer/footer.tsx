@@ -8,8 +8,6 @@ import { useTranslation } from 'react-i18next'
 
 import { useInitialSettingsContext } from '@/context/initial-settings-context'
 
-import { getLogo } from '@/lib/logo'
-
 import chatIcon from '@/assets/icons/chat.png'
 import FacebookIcon from '@/assets/social/facebook.svg'
 import InstagramIcon from '@/assets/social/instagram.svg'
@@ -28,12 +26,9 @@ import tetherLogo from '@/assets/footer/tether.png'
 import { Button } from '../../ui/button'
 import { TawkChatModal } from '@/components/modals/tawk-chat-modal'
 
-const eventName = 'easter'
-
 const Footer = () => {
   const { t } = useTranslation()
   // const year = new Date().getFullYear()
-  const { logo } = getLogo(eventName)
   const { settings } = useInitialSettingsContext()
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [chatModalOpen, setChatModalOpen] = useState(false)

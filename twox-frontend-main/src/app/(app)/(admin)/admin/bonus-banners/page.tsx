@@ -26,6 +26,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 
+import bonusBannerSpinFallback from '@/assets/images/spin_img.png'
+
 export default function BonusBannersAdminPage() {
   const [banners, setBanners] = useState<BonusBanner[]>([])
   const [loading, setLoading] = useState(true)
@@ -346,7 +348,7 @@ export default function BonusBannersAdminPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, image: e.target.value })
                   }
-                  placeholder='/images/bonus/spin.png'
+                  placeholder={bonusBannerSpinFallback.src}
                   required
                 />
               </div>

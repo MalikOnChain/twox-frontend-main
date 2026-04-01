@@ -60,7 +60,7 @@ export default function BonusBanner({
           title: banner.bannerData?.title || banner.title || 'Join Twox & Get',
           subtitle: banner.bannerData?.subtitle || '100% BONUS',
           highlight: banner.bannerData?.highlight || 'UP TO 1 BTC!',
-          image: banner.image || '/images/bonus/spin.png',
+          image: banner.image || spinImg.src,
           features: banner.bannerData?.features || ['Anonymous', 'Zero fee & Limit', 'VPN Friendly'],
         }))
 
@@ -76,7 +76,7 @@ export default function BonusBanner({
           title: 'Join Twox & Get',
           subtitle: '100% BONUS',
           highlight: 'UP TO 1 BTC!',
-          image: '/images/bonus/spin.png',
+          image: spinImg.src,
           features: ['Anonymous', 'Zero fee & Limit', 'VPN Friendly'],
         }
         setBanners([defaultBanner])
@@ -90,7 +90,7 @@ export default function BonusBanner({
         title: 'Join Twox & Get',
         subtitle: '100% BONUS',
         highlight: 'UP TO 1 BTC!',
-        image: '/images/bonus/spin.png',
+        image: spinImg.src,
         features: ['Anonymous', 'Zero fee & Limit', 'VPN Friendly'],
       }
       setBanners([defaultBanner])

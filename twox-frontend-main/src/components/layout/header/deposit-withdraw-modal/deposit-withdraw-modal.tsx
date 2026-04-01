@@ -1097,7 +1097,7 @@ function DepositWithdrawModal({
               withdrawal
             </p>
             <div className='flex transform cursor-pointer justify-center rounded-lg bg-[#47474778] px-3 py-2 duration-300 ease-in-out active:scale-[0.98]'>
-              <div className='flex h-7 w-14 items-center justify-center gap-2 bg-[url(/background/locked-cards.png)] bg-contain bg-no-repeat'>
+              <div className='flex h-7 w-14 items-center justify-center gap-2 rounded-md bg-mirage/90 bg-contain bg-no-repeat'>
                 <LockIcon />
               </div>
             </div>

@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import NextImage from '@/components/ui/image'
 
+import skinPlaceholder from '@/assets/images/gift.webp'
+
 import { SkinItem } from '@/types/skins'
 
 // This component displays a single skin item in the grid
@@ -26,7 +28,7 @@ const SkinPreviewer = ({ item }: { item: SkinItem }) => {
       {/* Skin Image */}
       <div className='relative aspect-square w-full overflow-hidden'>
         <NextImage
-          src={item.image || '/images/placeholder-skin.png'}
+          src={item.image || skinPlaceholder.src}
           alt={item.name}
           width='w-full'
           height='h-auto'

@@ -1,28 +1,13 @@
-// import LogoEaster from '@/assets/brand/logo-easter.webp'
-import LogoEaster from '@/assets/brand/logo.webp'
-import Logo from '@/assets/brand/logo.webp'
-import LogoEasterSymbol from '@/assets/brand/logo-symbol-2.png'
-import LogoSymbol from '@/assets/brand/logo-symbol-2.png'
+/** Official TWOX wordmark (transparent PNG in public/) */
+export const TWOX_BRAND_LOGO_SRC = '/twox-logo.png'
 
-// Main logo from assets
-import MainLogo from '@/assets/brand/main-logo.png'
-import SmallLogo from '@/assets/brand/small-logo.png'
+export const MainLogo = TWOX_BRAND_LOGO_SRC
+export const SmallLogo = TWOX_BRAND_LOGO_SRC
 
-// Export the main logo for direct use
-export { MainLogo, SmallLogo }
-
-export function getLogo(eventName: 'easter' | 'normal') {
-  if (eventName === 'easter') {
-    return {
-      logo: LogoEaster,
-      logoSymbol: LogoEasterSymbol,
-      // className: '-top-1',
-    }
-  }
-
+export function getLogo(_eventName: 'easter' | 'normal') {
   return {
-    logo: Logo,
-    logoSymbol: LogoSymbol,
+    logo: TWOX_BRAND_LOGO_SRC,
+    logoSymbol: TWOX_BRAND_LOGO_SRC,
     className: '',
   }
 }

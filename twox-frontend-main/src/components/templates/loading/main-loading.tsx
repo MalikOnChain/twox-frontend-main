@@ -27,7 +27,7 @@ const MainLoading = ({
           src={logoImg || logo}
           alt='Loading...'
           width={200}
-          height={80}
+          height={133}
           className='object-contain'
           priority
         />
