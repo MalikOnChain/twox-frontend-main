@@ -1,3 +1,5 @@
+import type { GameStatItem } from '@/api/game-stats'
+
 export interface GameDataTypes {
   id: string
   gameName: string
@@ -13,6 +15,28 @@ export interface GameDataTypes {
 
 export interface TabData {
   [key: string]: GameDataTypes[]
+}
+
+/** Dev / demo: use when API is down or returns empty. Set NEXT_PUBLIC_USE_MOCK_GAME_STATS=true in prod to demo. */
+export function shouldUseMockGameStats(): boolean {
+  if (process.env.NEXT_PUBLIC_USE_MOCK_GAME_STATS === 'true') return true
+  return process.env.NODE_ENV === 'development'
+}
+
+export function gameDataTypesToGameStatItem(row: GameDataTypes): GameStatItem {
+  return {
+    id: row.id,
+    gameName: row.gameName,
+    gameCode: row.gameCode,
+    providerCode: row.providerCode,
+    gameType: row.gameType,
+    player: row.player.replace(/\*+$/, ''),
+    betAmount: row.betAmount,
+    winAmount: row.profit + row.betAmount,
+    profit: row.profit,
+    multiplier: row.multiplier,
+    currency: row.currency,
+  }
 }
 
 export const dummyData: TabData = {
@@ -338,4 +362,19 @@ export const dummyData: TabData = {
       currency: '₿',
     },
   ],
+}
+
+export function getMockGameStatItemsForLatestWinners(limit = 20): GameStatItem[] {
+  const base = dummyData['Latest Wins']
+  const out: GameStatItem[] = []
+  for (let i = 0; i < limit; i++) {
+    const src = base[i % base.length]
+    out.push(
+      gameDataTypesToGameStatItem({
+        ...src,
+        id: i < base.length ? src.id : `${src.id}-m${i}`,
+      })
+    )
+  }
+  return out
 }

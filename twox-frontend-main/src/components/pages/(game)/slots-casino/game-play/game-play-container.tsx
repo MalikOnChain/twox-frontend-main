@@ -1,6 +1,6 @@
 'use client'
 
-import { Maximize2, Minimize2, Heart } from 'lucide-react'
+import { Heart,Maximize2, Minimize2 } from 'lucide-react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { cn } from '@/lib/utils'

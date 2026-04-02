@@ -1,30 +1,31 @@
 'use client'
 
-import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import React, { useCallback, useEffect, useRef,useState } from 'react'
 import type { Swiper as SwiperType } from 'swiper'
 import { Autoplay, FreeMode } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-import { useSocket } from '@/context/socket-context'
 import { getAllCryptoPrices } from '@/api/crypto-prices'
+
+import { useSocket } from '@/context/socket-context'
 
 import { Button } from '@/components/ui/button'
 
-import TetherIcon from '@/assets/currencies/tether.svg'
-import SolanaIcon from '@/assets/currencies/sol.svg'
-import EthIcon from '@/assets/currencies/eth.svg'
-import TronIcon from '@/assets/currencies/tron.svg'
+import ArbitrumIcon from '@/assets/currencies/arbitrum.svg'
+import AvalancheIcon from '@/assets/currencies/avalanche.svg'
+import BnbIcon from '@/assets/currencies/bnb.svg'
 import BtcIcon from '@/assets/currencies/btc.svg'
 import DogeIcon from '@/assets/currencies/doge.svg'
+import EthIcon from '@/assets/currencies/eth.svg'
 import LtcIcon from '@/assets/currencies/ltc.svg'
-import BnbIcon from '@/assets/currencies/bnb.svg'
-import XrpIcon from '@/assets/currencies/xrp.svg'
 import MaticIcon from '@/assets/currencies/matic.svg'
-import AvalancheIcon from '@/assets/currencies/avalanche.svg'
-import ArbitrumIcon from '@/assets/currencies/arbitrum.svg'
+import SolanaIcon from '@/assets/currencies/sol.svg'
+import TetherIcon from '@/assets/currencies/tether.svg'
+import TronIcon from '@/assets/currencies/tron.svg'
+import XrpIcon from '@/assets/currencies/xrp.svg'
 import CryptoPricesIcon from '@/assets/menus/crypto_prices.svg'
 
 interface CryptoPriceData {

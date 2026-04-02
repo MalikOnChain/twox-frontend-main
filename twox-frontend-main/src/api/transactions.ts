@@ -7,7 +7,7 @@ export interface Transaction {
   amount: number | string
   currency: string
   type: string // 'deposit', 'withdrawal', 'transaction', 'bet', 'win', etc.
-  method?: string // 'payout_pix', 'coinsbuy_crypto', etc.
+  method?: string // e.g. 'fystack_crypto', legacy 'payout_pix'
   status: string | number // Can be numeric (0-5) or string ('active', 'completed', etc.)
   category?: string // For game transactions
   gameId?: string
@@ -19,7 +19,7 @@ export interface Transaction {
 }
 
 export interface TransactionPagination {
-  total: number
+  total?: number
   totalPages: number
   currentPage: number
 }
@@ -54,9 +54,11 @@ export interface BonusTransaction {
 }
 
 /**
- * Get all PIX transactions (deposits + withdrawals + Coinsbuy)
+ * Player wallet activity from GET /transactions (CryptoTransactions / ledger — not PIX).
  */
-export const getPixTransactions = async (params: GetTransactionsParams = {}): Promise<TransactionResponse> => {
+export const getWalletLedgerTransactions = async (
+  params: GetTransactionsParams = {}
+): Promise<TransactionResponse> => {
   try {
     const { page = 1, limit = 20, type, currency, dateFrom, dateTo } = params
 
@@ -76,17 +78,28 @@ export const getPixTransactions = async (params: GetTransactionsParams = {}): Pr
     }
 
     const response = await api.get<any>('/transactions', { params: queryParams })
-    
-    // Backend returns { rows: [...], pagination: {...} } instead of { transactions: [...] }
+
+    const pagination = response.data?.pagination || {
+      total: 0,
+      totalPages: 0,
+      currentPage: 1,
+    }
     return {
       transactions: response.data?.rows || [],
-      pagination: response.data?.pagination || { total: 0, totalPages: 0, currentPage: 1 }
+      pagination: {
+        total: pagination.total ?? 0,
+        totalPages: pagination.totalPages ?? 0,
+        currentPage: pagination.currentPage ?? 1,
+      },
     }
   } catch (error) {
-    console.error('Failed to fetch PIX transactions:', error)
+    console.error('Failed to fetch wallet transactions:', error)
     return { transactions: [], pagination: { total: 0, totalPages: 0, currentPage: 1 } }
   }
 }
+
+/** @deprecated Use getWalletLedgerTransactions (name kept for older imports). */
+export const getPixTransactions = getWalletLedgerTransactions
 
 /**
  * Get game transactions (bets, wins, etc.)
@@ -121,7 +134,7 @@ export const getGameTransactions = async (params: GetTransactionsParams = {}): P
 }
 
 /**
- * Get crypto transactions (Vaultody)
+ * Get crypto transactions from `/user/transaction/crypto` (legacy path; may differ from ledger list).
  */
 export const getCryptoTransactions = async (params: GetTransactionsParams = {}): Promise<TransactionResponse> => {
   try {
@@ -218,29 +231,54 @@ export const getBonusTransactions = async (params: GetTransactionsParams = {}): 
   }
 }
 
+function normalizeLedgerTransaction(row: Record<string, any>): Transaction {
+  const typeRaw = String(row?.type || '').toUpperCase()
+  const typeNorm =
+    typeRaw === 'WITHDRAW'
+      ? 'withdraw'
+      : typeRaw === 'DEPOSIT'
+        ? 'deposit'
+        : String(row?.type || 'unknown').toLowerCase()
+  return {
+    ...row,
+    currency: row.currency || row.unit || 'USD',
+    type: typeNorm,
+    amount:
+      row.amount != null && row.amount !== ''
+        ? row.amount
+        : row.exchangedAmount != null
+          ? row.exchangedAmount
+          : 0,
+  } as Transaction
+}
+
 /**
- * Get all transactions combined
+ * Get all transactions combined (wallet ledger + game + legacy crypto + service + bonus).
+ * Always pulls recent pages from each source with a generous cap, then merges client-side.
  */
 export const getAllTransactions = async (params: GetTransactionsParams = {}): Promise<TransactionResponse> => {
   try {
     const { page = 1, limit = 20, type } = params
 
-    // Determine how much to fetch based on filter type
-    const fetchLimit = type && type !== 'all' ? limit * 2 : Math.ceil(limit / 5)
-    
-    // Fetch from all sources with error handling
-    const [pixData, gameData, cryptoData, serviceData, bonusData] = await Promise.allSettled([
-      getPixTransactions({ ...params, limit: fetchLimit }),
-      getGameTransactions({ ...params, limit: fetchLimit }),
-      getCryptoTransactions({ ...params, limit: fetchLimit }),
-      getServiceTransactions({ ...params, limit: fetchLimit }),
-      getBonusTransactions({ ...params, limit: fetchLimit }),
+    const fetchLimit = Math.min(500, Math.max(150, (type && type !== 'all' ? limit * 3 : limit) * 3))
+    const fetchParams = {
+      ...params,
+      page: 1,
+      limit: fetchLimit,
+    }
+
+    const [walletLedgerData, gameData, cryptoData, serviceData, bonusData] = await Promise.allSettled([
+      getWalletLedgerTransactions(fetchParams),
+      getGameTransactions(fetchParams),
+      getCryptoTransactions(fetchParams),
+      getServiceTransactions(fetchParams),
+      getBonusTransactions(fetchParams),
     ])
 
-    // Extract successful results with validation
-    const pixTransactions = pixData.status === 'fulfilled' && Array.isArray(pixData.value.transactions) 
-      ? pixData.value.transactions 
-      : []
+    const walletLedgerTransactions =
+      walletLedgerData.status === 'fulfilled' && Array.isArray(walletLedgerData.value.transactions)
+        ? walletLedgerData.value.transactions.map((r) => normalizeLedgerTransaction(r as Record<string, any>))
+        : []
     const gameTransactions = gameData.status === 'fulfilled' && Array.isArray(gameData.value.transactions)
       ? gameData.value.transactions 
       : []
@@ -255,7 +293,8 @@ export const getAllTransactions = async (params: GetTransactionsParams = {}): Pr
       : []
 
     // Log any failures for debugging
-    if (pixData.status === 'rejected') console.warn('PIX transactions failed:', pixData.reason)
+    if (walletLedgerData.status === 'rejected')
+      console.warn('Wallet ledger transactions failed:', walletLedgerData.reason)
     if (gameData.status === 'rejected') console.warn('Game transactions failed:', gameData.reason)
     if (cryptoData.status === 'rejected') console.warn('Crypto transactions failed:', cryptoData.reason)
     if (serviceData.status === 'rejected') console.warn('Service transactions failed:', serviceData.reason)
@@ -263,7 +302,7 @@ export const getAllTransactions = async (params: GetTransactionsParams = {}): Pr
 
     // Combine and sort by date - NO FILTERING HERE, filtering happens client-side
     const allTransactions = [
-      ...pixTransactions,
+      ...walletLedgerTransactions,
       ...gameTransactions,
       ...cryptoTransactions,
       ...serviceTransactions,
@@ -276,7 +315,7 @@ export const getAllTransactions = async (params: GetTransactionsParams = {}): Pr
       transactions: allTransactions,
       pagination: {
         total: allTransactions.length,
-        totalPages: Math.ceil(allTransactions.length / limit),
+        totalPages: Math.max(1, Math.ceil(allTransactions.length / limit)),
         currentPage: page,
       },
     }

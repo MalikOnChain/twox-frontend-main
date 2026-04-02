@@ -1,6 +1,6 @@
 'use client'
-import React, { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 import { useBanner } from '@/context/features/banner-context'
 import { useGameProvider } from '@/context/games/game-provider-context'

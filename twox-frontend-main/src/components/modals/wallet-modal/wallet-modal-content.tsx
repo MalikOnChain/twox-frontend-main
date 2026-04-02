@@ -3,10 +3,10 @@ import { useWalletModal } from '@/context/wallet-modal-context'
 import { WALLET_MODAL_TABS } from '@/lib/crypto'
 import { cn } from '@/lib/utils'
 
+import { CryptoDepositFystackFlow } from '@/components/layout/header/deposit-withdraw-modal/crypto-deposit-fystack-flow'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import DepositContent, { DepositTargetType } from './deposit'
-import CoinsbuyContent from './deposit/coinsbuy-content'
 import WithdrawContent from './withdraw/withdraw-content'
 
 export default function WalletModalContent() {
@@ -52,8 +52,8 @@ export default function WalletModalContent() {
             value={WALLET_MODAL_TABS.deposit}
             className='m-0 rounded-md'
           >
-            {activeTarget === DepositTargetType.Coinsbuy ? (
-              <CoinsbuyContent onClose={() => setActiveTarget(null)} />
+            {activeTarget === DepositTargetType.Fystack ? (
+              <CryptoDepositFystackFlow onExit={() => setActiveTarget(null)} />
             ) : (
               <DepositContent />
             )}

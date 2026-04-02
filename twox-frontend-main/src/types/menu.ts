@@ -3,6 +3,8 @@ export interface NavItem {
   icon?: React.ElementType
   disabled?: boolean
   to?: string
+  /** When true, navigation uses a new browser tab (rel="noopener noreferrer"). */
+  openInNewTab?: boolean
   items?: NavItem[]
   onClick?: () => void
   coloredIcon?: React.ElementType

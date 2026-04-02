@@ -1,20 +1,18 @@
 'use client'
-import { SearchIcon } from 'lucide-react'
 import React, { useMemo, useState } from 'react'
 
 import { useWalletModal } from '@/context/wallet-modal-context'
 
 import { cn } from '@/lib/utils'
 
-import { Input } from '@/components/ui/input'
-
 import Coinbase from '@/assets/logos/coinbase.svg'
 import Metamask from '@/assets/logos/metamask.svg'
 import Phantom from '@/assets/logos/phantom.svg'
 import WConnect from '@/assets/logos/w-connect.svg'
 
-import { CoinNetworkData } from '@/types/crypto'
 import MigrationNotice from './migration-notice'
+
+import { CoinNetworkData } from '@/types/crypto'
 
 export enum DepositTargetType {
   Crypto = 'Crypto',
@@ -23,7 +21,7 @@ export enum DepositTargetType {
   Coinbase = 'Coinbase',
   Withdraw = 'Widthdraw',
   GiftCards = 'GiftCards',
-  Coinsbuy = 'Coinsbuy',
+  Fystack = 'Fystack',
   Other = 'Other',
 }
 
@@ -45,15 +43,15 @@ export const DepositTargets: TDepositTargets[] = [
     label: 'Cryptocurrency Deposits',
     targets: [
       {
-        title: 'Coinsbuy',
-        icon: '💰',
+        title: 'Crypto deposit',
+        icon: '₿',
         status: 1,
-        type: DepositTargetType.Coinsbuy,
+        type: DepositTargetType.Fystack,
         enabled: true,
       },
     ],
   },
-  // Legacy wallet options - disabled in favor of Coinsbuy
+  // Legacy wallet connect options (disabled)
   {
     label: 'Legacy Wallet Options (Deprecated)',
     targets: [
@@ -257,8 +255,8 @@ const DepositContent = () => {
   }
 
   const handleTargetClick = (target: any) => {
-    if (target.type === DepositTargetType.Coinsbuy) {
-      setActiveTarget(DepositTargetType.Coinsbuy)
+    if (target.type === DepositTargetType.Fystack) {
+      setActiveTarget(DepositTargetType.Fystack)
     }
   }
 
@@ -266,10 +264,9 @@ const DepositContent = () => {
     <div className='custom-scrollbar -webkit-overflow-scrolling-touch flex max-h-[calc(100vh-150px)] flex-col overflow-y-auto sm:max-h-none'>
       <MigrationNotice />
       <h6 className='mb-3 text-base text-foreground'>Cryptocurrency Deposits</h6>
-      {/* Legacy crypto search - disabled in favor of Coinsbuy */}
-      <div className="mb-4 p-3 bg-secondary-800 rounded-lg border border-secondary-700">
-        <p className="text-xs text-gray-400 text-center">
-          Use Coinsbuy below to access multiple cryptocurrencies with real-time pricing
+      <div className='mb-4 rounded-lg border border-secondary-700 bg-secondary-800 p-3'>
+        <p className='text-center text-xs text-gray-400'>
+          Deposit with your personal on-chain address (QR). Balance updates after confirmation.
         </p>
       </div>
 

@@ -1,5 +1,6 @@
 import api from '@/lib/api'
 import { handleApiError } from '@/lib/error-handler'
+
 import { TProviderGameItem } from '@/types/game'
 
 export interface UserGamesResponse {

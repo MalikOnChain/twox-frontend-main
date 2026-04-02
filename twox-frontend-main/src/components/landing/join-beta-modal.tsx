@@ -1,19 +1,21 @@
 'use client'
 
-import { useState } from 'react'
 import { X } from 'lucide-react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { CustomModal } from '@/components/ui/modal'
+import { getErrorMessage } from '@/lib/error-handler'
+
+import ThanksForRegisteringModal from '@/components/landing/thanks-for-registering-modal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import ThanksForRegisteringModal from '@/components/landing/thanks-for-registering-modal'
+import { CustomModal } from '@/components/ui/modal'
 
+import DiscordIcon from '@/assets/social/discord-colored.svg'
 import GoogleIcon from '@/assets/social/google.svg'
 import TelegramIcon from '@/assets/social/telegram-colored.svg'
-import DiscordIcon from '@/assets/social/discord-colored.svg'
+
 import { AUTH_PROVIDER_KEYS } from '@/types/auth'
-import { getErrorMessage } from '@/lib/error-handler'
 
 interface JoinBetaModalProps {
   open: boolean

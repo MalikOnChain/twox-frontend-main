@@ -12,6 +12,7 @@ import React, {
 
 import { AUTH_TABS } from '@/lib/auth'
 import { WALLET_MODAL_TABS } from '@/lib/crypto'
+import { enablePixLegacyUI } from '@/lib/feature-flags'
 
 import BalanceModal from '@/components/layout/header/balance-modal/balance-modal'
 import DepositWithdrawModal from '@/components/layout/header/deposit-withdraw-modal/deposit-withdraw-modal'
@@ -107,7 +108,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
         {type === ModalType.Wheel && (
           <WheelModal open={isOpen} onOpenChange={setIsOpen} />
         )}
-        {type === ModalType.Pix && (
+        {enablePixLegacyUI && type === ModalType.Pix && (
           <PixModal open={isOpen} onOpenChange={setIsOpen} />
         )}
         {type === ModalType.Promotion && (

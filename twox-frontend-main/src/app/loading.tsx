@@ -1,9 +1,10 @@
 import React from 'react'
 
 import { getSettings } from '@/api/server/settings'
+
 import {
-  SITE_BRAND_LOGO_URL,
   resolveSiteLogoUrl,
+  SITE_BRAND_LOGO_URL,
 } from '@/lib/site-brand-defaults'
 
 import MainLoading from '@/components/templates/loading/main-loading'

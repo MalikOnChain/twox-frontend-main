@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useRef,useState } from 'react'
 import type { Swiper as SwiperType } from 'swiper'
+
 import BonusBanner from './bonus-banner'
 
 // Wrapper component that manages pagination state

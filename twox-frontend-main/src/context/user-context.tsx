@@ -15,7 +15,6 @@ import { toast } from 'sonner'
 import { exchangeToken, getUser, verifyEmail } from '@/api/auth'
 
 import {
-  clearAuthSessionCookie,
   setAuthSessionCookie,
   syncAuthSessionCookieFromStorage,
 } from '@/lib/auth-session-cookie'

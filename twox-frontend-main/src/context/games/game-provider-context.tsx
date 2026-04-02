@@ -12,9 +12,9 @@ import React, {
   useState,
 } from 'react'
 
-import { getGames, getGamesProviders, getGameCategories } from '@/api/game'
+import { getGameCategories,getGames, getGamesProviders } from '@/api/game'
 
-import { TProviderGameItem, TProviderGameType, TGameProvider } from '@/types/game'
+import { TGameProvider,TProviderGameItem, TProviderGameType } from '@/types/game'
 import { TPagination } from '@/types/pagination'
 
 interface GameProviderContextType {

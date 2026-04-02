@@ -1,10 +1,12 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
-import { API_URL } from '@/lib/api'
 import { toast } from 'sonner'
-import { useUser } from '@/context/user-context'
+
 import { useModal } from '@/context/modal-context'
+import { useUser } from '@/context/user-context'
+
+import { API_URL } from '@/lib/api'
 
 interface TelegramLoginWidgetProps {
   botUsername: string

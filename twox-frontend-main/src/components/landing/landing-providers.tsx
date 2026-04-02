@@ -1,17 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import type { Swiper as SwiperType } from 'swiper'
+import { useEffect, useState } from 'react'
 import { Autoplay, FreeMode } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 
 import { getGamesProviders } from '@/api/game'
+
+import { SectionDescription,SectionTitle } from '@/components/landing/common'
+
 import { TGameProvider } from '@/types/game'
-import { SectionTitle, SectionDescription } from '@/components/landing/common'
 
 export default function LandingProviders() {
   const [providers, setProviders] = useState<TGameProvider[]>([])

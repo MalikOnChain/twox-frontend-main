@@ -2,10 +2,9 @@
 
 import { Search } from 'lucide-react'
 import Image from 'next/image'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
-
 
 import { useGameProvider } from '@/context/games/game-provider-context'
 
@@ -13,6 +12,7 @@ import { cn } from '@/lib/utils'
 
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
 import Banner from '@/components/pages/home/banner/banner'
+import ContentSectionDisplay from '@/components/templates/content-section/content-section'
 import GamingRanking from '@/components/templates/game-rank-table/game-rank-table'
 import LatestWinners from '@/components/templates/latest-winners/latest-winners'
 import GameGridLoader from '@/components/templates/loading/game-grid-loader'
@@ -20,7 +20,6 @@ import GamePageLoader from '@/components/templates/loading/game-page-loader'
 import ProviderSection from '@/components/templates/provider-section/provider-section'
 import ResponsiveFilter from '@/components/templates/responsive-filter/responsive-filter'
 import { Button } from '@/components/ui/button'
-import { FilterItem } from '@/components/ui/filter-dropdown'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -34,8 +33,7 @@ import plusIcon from '@/assets/icons/plusicon.png'
 
 import { Skeleton } from '../../../../ui/skeleton'
 
-import { TGameProvider, TProviderGameType } from '@/types/game'
-import ContentSectionDisplay from '@/components/templates/content-section/content-section'
+import { TProviderGameType } from '@/types/game'
 
 export default function GameList({
   type,

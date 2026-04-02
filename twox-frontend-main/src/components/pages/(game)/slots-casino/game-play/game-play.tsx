@@ -1,6 +1,6 @@
 'use client'
 
-import { Info, Heart } from 'lucide-react'
+import { Heart,Info } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
@@ -8,11 +8,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { getGame, getGames, onChangePlayMode } from '@/api/game'
-import { addFavorite, removeFavorite, addRecentGame, checkIsFavorite } from '@/api/user-games'
+import { addFavorite, addRecentGame, checkIsFavorite,removeFavorite } from '@/api/user-games'
 
+import { useFingerprint } from '@/context/fingerprint-context'
 import { AUTH_TABS, ModalType, useModal } from '@/context/modal-context'
 import { useUser } from '@/context/user-context'
-import { useFingerprint } from '@/context/fingerprint-context'
 
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
 import GamePlayPageLoader from '@/components/templates/loading/game-play-loader'

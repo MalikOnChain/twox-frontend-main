@@ -1,10 +1,10 @@
 'use client'
 
+import { X } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { toast } from 'sonner'
-import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
 
 import { redeemPromoCode } from '@/api/bonus'
 

@@ -49,8 +49,8 @@ function WalletModalContextContent({ open, onOpenChange }: WalletModal) {
         return 'Deposit with Skinsback'
       case DepositTargetType.GiftCards:
         return 'Deposit with Gift Cards'
-      case DepositTargetType.Coinsbuy:
-        return 'Crypto Deposit'
+      case DepositTargetType.Fystack:
+        return 'Crypto deposit'
       default:
         if (activeTarget == null) {
           return 'Wallet'

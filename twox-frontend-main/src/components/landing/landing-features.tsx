@@ -1,17 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
+import { useState } from 'react'
 
-import { SectionLabel, SectionTitle, SectionDescription, FeatureCard, CTAButton } from '@/components/landing/common'
 import BugBountyModal from '@/components/landing/bug-bounty-modal'
+import { CTAButton,FeatureCard, SectionDescription, SectionLabel, SectionTitle } from '@/components/landing/common'
 import ExtraPointsModal from '@/components/landing/extra-points-modal'
 import JoinBetaModal from '@/components/landing/join-beta-modal'
 
 import aboutUsBg from '@/assets/landing-page/about-us.png'
+import frame18 from '@/assets/landing-page/Frame_18.png'
 import illustration from '@/assets/landing-page/illustration.png'
 import vecteezyCoin from '@/assets/landing-page/vecteezy_3d-money-coin-dollar.png'
-import frame18 from '@/assets/landing-page/Frame_18.png'
 
 export default function LandingFeatures() {
   const [bugBountyModalOpen, setBugBountyModalOpen] = useState(false)

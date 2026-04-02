@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { getContentSections, ContentSection } from '@/api/content'
+
+import { ContentSection,getContentSections } from '@/api/content'
 
 export default function ContentSectionDisplay() {
   const [sections, setSections] = useState<ContentSection[]>([])

@@ -1,9 +1,10 @@
 'use client'
 import { Calendar, Search } from 'lucide-react'
 import Image from 'next/image'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 
 import { getAllTransactions, Transaction } from '@/api/transactions'
+import { FYSTACK_TRANSACTION_FILTER_UNITS } from '@/components/layout/header/deposit-withdraw-modal/fystack-stablecoins-ui'
 
 import { cn } from '@/lib/utils'
 
@@ -25,29 +26,53 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import USDTIcon from '@/assets/currencies/usdt.svg'
-import BTCIcon from '@/assets/currencies/btc.svg'
-import ETHIcon from '@/assets/currencies/eth.svg'
+import ARBIcon from '@/assets/currencies/arbitrum.svg'
+import AvaxIcon from '@/assets/currencies/avalanche.svg'
 import BNBIcon from '@/assets/currencies/bnb.svg'
+import BTCIcon from '@/assets/currencies/btc.svg'
+import DOGEIcon from '@/assets/currencies/doge.svg'
+import ETHIcon from '@/assets/currencies/eth.svg'
+import LTCIcon from '@/assets/currencies/ltc.svg'
 import MATICIcon from '@/assets/currencies/matic.svg'
 import SOLIcon from '@/assets/currencies/sol.svg'
-import DOGEIcon from '@/assets/currencies/doge.svg'
-import LTCIcon from '@/assets/currencies/ltc.svg'
 import TRONIcon from '@/assets/currencies/tron.svg'
+import USDCIcon from '@/assets/currencies/usdc.svg'
+import USDTIcon from '@/assets/currencies/usdt.svg'
 import XRPIcon from '@/assets/currencies/xrp.svg'
 import LeftArrow from '@/assets/icons/arrow-back.svg'
 import RightArrow from '@/assets/icons/arrow-next.svg'
 import transactionIcon from '@/assets/icons/transaction-icon.png'
 
-// Currency icon mapping
+/** Resolve amount column currency from merged transaction shapes (API may send `unit` / metadata). */
+function resolveTransactionDisplayCurrency(
+  transaction: Transaction & { unit?: string }
+): string {
+  const meta = transaction.metadata as Record<string, unknown> | undefined
+  const fromMeta = meta?.currency ?? meta?.unit ?? meta?.symbol
+  const raw =
+    (transaction.currency && String(transaction.currency).trim()) ||
+    (transaction.unit && String(transaction.unit).trim()) ||
+    (typeof fromMeta === 'string' ? fromMeta.trim() : '')
+  if (raw) return raw.toUpperCase()
+  return 'USDT'
+}
+
+// Currency icon mapping (extend as new custody / game currencies appear)
 const getCurrencyIcon = (currency: string) => {
-  const currencyUpper = currency?.toUpperCase()
+  const currencyUpper = currency?.trim().toUpperCase()
   switch (currencyUpper) {
     case 'USDT':
     case 'USD':
-      return <USDTIcon className='h-4 w-4' />
+    case 'USD₮':
+    case 'TETHER':
+      return <USDTIcon className='h-4 w-4 shrink-0' />
+    case 'USDC':
+    case 'DAI':
+    case 'BUSD':
+    case 'FDUSD':
+      return <USDCIcon className='h-4 w-4 shrink-0' />
     case 'BTC':
-      return <BTCIcon className='h-4 w-4' />
+      return <BTCIcon className='h-4 w-4 shrink-0' />
     case 'ETH':
     case 'ETHEREUM':
       return <ETHIcon className='h-4 w-4' />
@@ -69,6 +94,12 @@ const getCurrencyIcon = (currency: string) => {
       return <TRONIcon className='h-4 w-4' />
     case 'XRP':
       return <XRPIcon className='h-4 w-4' />
+    case 'AVAX':
+    case 'AVALANCHE':
+      return <AvaxIcon className='h-4 w-4' />
+    case 'ARB':
+    case 'ARBITRUM':
+      return <ARBIcon className='h-4 w-4' />
     case 'EUR':
       return (
         <span className='flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white'>
@@ -99,10 +130,16 @@ const filterOptions = [
 
 const currencyOptions = [
   { value: 'all', label: 'All Currencies' },
-  { value: 'USDT', label: 'USDT' },
-  { value: 'EUR', label: 'EUR' },
-  { value: 'BTC', label: 'BTC' },
+  ...FYSTACK_TRANSACTION_FILTER_UNITS.map((symbol) => ({
+    value: symbol,
+    label: symbol,
+  })),
 ]
+
+function FystackCurrencyFilterIcons({ value }: { value: string }) {
+  if (value === 'all') return null
+  return getCurrencyIcon(value)
+}
 
 const timeRangeOptions = [
   { value: 'today', label: 'Today' },
@@ -130,26 +167,29 @@ const TransactionHistory = () => {
   const getDateRange = () => {
     const now = new Date()
     let dateFrom: Date | undefined
-    let dateTo: Date | undefined = now
+    let dateTo: Date | undefined = new Date(now.getTime())
 
     switch (selectedTimeRange) {
       case 'today': {
-        dateFrom = new Date(now.setHours(0, 0, 0, 0))
+        dateFrom = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
         break
       }
       case 'yesterday': {
-        const yesterday = new Date(now)
-        yesterday.setDate(yesterday.getDate() - 1)
-        dateFrom = new Date(yesterday.setHours(0, 0, 0, 0))
-        dateTo = new Date(yesterday.setHours(23, 59, 59, 999))
+        const y = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
+        dateFrom = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 0, 0, 0, 0)
+        dateTo = new Date(y.getFullYear(), y.getMonth(), y.getDate(), 23, 59, 59, 999)
         break
       }
       case 'week': {
-        dateFrom = new Date(now.setDate(now.getDate() - 7))
+        dateFrom = new Date(now.getTime())
+        dateFrom.setDate(dateFrom.getDate() - 7)
+        dateFrom.setHours(0, 0, 0, 0)
         break
       }
       case 'month': {
-        dateFrom = new Date(now.setDate(now.getDate() - 30))
+        dateFrom = new Date(now.getTime())
+        dateFrom.setDate(dateFrom.getDate() - 30)
+        dateFrom.setHours(0, 0, 0, 0)
         break
       }
       case 'current-month': {
@@ -216,9 +256,9 @@ const TransactionHistory = () => {
       }
     }
     
-    // Currency filter
-    const matchesCurrency = selectedCurrency === 'all' || 
-                           transaction.currency?.toUpperCase() === selectedCurrency.toUpperCase()
+    const txCurrency = resolveTransactionDisplayCurrency(transaction)
+    const matchesCurrency =
+      selectedCurrency === 'all' || txCurrency === selectedCurrency.toUpperCase()
     
     // Search filter
     let matchesSearch = true
@@ -228,17 +268,17 @@ const TransactionHistory = () => {
         transaction.type?.toLowerCase().includes(searchLower) ||
         transaction.gameName?.toLowerCase().includes(searchLower) ||
         transaction.status?.toString().toLowerCase().includes(searchLower) ||
-        transaction.method?.toLowerCase().includes(searchLower)
+        transaction.method?.toLowerCase().includes(searchLower) ||
+        txCurrency.toLowerCase().includes(searchLower)
       )
     }
     
     return matchesType && matchesCurrency && matchesSearch
   })
 
-  // Reset page to 1 when filter changes
   useEffect(() => {
     setCurrentPage(1)
-  }, [selectedFilter])
+  }, [selectedFilter, selectedCurrency, selectedTimeRange])
 
   // Client-side pagination
   const itemsPerPage = 20
@@ -285,16 +325,20 @@ const TransactionHistory = () => {
               onValueChange={setSelectedCurrency}
             >
               <SelectTrigger className='w-full bg-cinder xm:w-[20%]'>
-                <SelectValue />
+                {/* SelectValue mirrors selected SelectItem (icon + label), do not add a second icon here */}
+                <SelectValue className='min-w-0 flex-1' />
               </SelectTrigger>
               <SelectContent className='bg-[#141317]'>
                 {currencyOptions.map((option) => (
                   <SelectItem
                     key={option.value}
                     value={option.value}
-                    className='min-h-[24px] cursor-pointer rounded py-2 text-white hover:bg-[#1f1f23] focus:bg-[#1f1f23] data-[highlighted]:bg-[#1f1f23]'
+                    className='min-h-[24px] cursor-pointer rounded py-2 pl-2 text-white hover:bg-[#1f1f23] focus:bg-[#1f1f23] data-[highlighted]:bg-[#1f1f23]'
                   >
-                    {option.label}
+                    <span className='flex items-center gap-2 pr-6'>
+                      <FystackCurrencyFilterIcons value={option.value} />
+                      <span>{option.label}</span>
+                    </span>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -444,7 +488,7 @@ const TransactionHistory = () => {
                                 ? transaction.amount.toFixed(2) 
                                 : parseFloat(transaction.amount || '0').toFixed(2)}
                             </span>
-                            {getCurrencyIcon(transaction.currency || 'USDT')}
+                            {getCurrencyIcon(resolveTransactionDisplayCurrency(transaction))}
                         </div>
                       </TableCell>
                         <TableCell className='text-[#FFFFFFCC] max-w-[200px] truncate'>

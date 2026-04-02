@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect,useState } from 'react'
 import { toast } from 'sonner'
 
-import { getUserSessions, removeSession, removeAllSessions, UserSession } from '@/api/user-settings'
+import { getUserSessions, removeAllSessions, removeSession, UserSession } from '@/api/user-settings'
 
 import SecurityLayout from '@/components/templates/security-layout/security-layout'
 import { Button } from '@/components/ui/button'

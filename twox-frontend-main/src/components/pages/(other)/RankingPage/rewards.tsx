@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { getUserTierRewards, claimTierReward, TierReward } from '@/api/vip-rewards'
+import { claimTierReward, getUserTierRewards, TierReward } from '@/api/vip-rewards'
 
 import { useUser } from '@/context/user-context'
 

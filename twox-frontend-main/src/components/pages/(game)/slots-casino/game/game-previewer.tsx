@@ -48,10 +48,10 @@ const GamePreviewer = ({
           // onLoad={handleImageLoad}
         />
         <div
-          className={`pointer-events-none absolute inset-0 transition-opacity duration-300`}
+          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
         />
         <button
-          className={`absolute bottom-4 left-1/2 z-10 translate-x-[-50%] translate-y-full opacity-0 transition-all duration-500 ease-in-out md:group-hover:bottom-1/2 md:group-hover:translate-y-1/2 md:group-hover:opacity-100`}
+          className="absolute bottom-4 left-1/2 z-10 translate-x-[-50%] translate-y-full opacity-0 transition-all duration-500 ease-in-out md:group-hover:bottom-1/2 md:group-hover:translate-y-1/2 md:group-hover:opacity-100"
         >
           <PlayButton />
         </button>

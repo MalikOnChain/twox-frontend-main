@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import Image from 'next/image'
 import { X } from 'lucide-react'
+import Image from 'next/image'
+import { useState } from 'react'
 
-import { SectionLabel, SectionTitle, SectionDescription } from '@/components/landing/common'
+import {SectionLabel, SectionTitle } from '@/components/landing/common'
 
 import answerBack from '@/assets/landing-page/answer_back.png'
 import starIcon from '@/assets/landing-page/star.png'

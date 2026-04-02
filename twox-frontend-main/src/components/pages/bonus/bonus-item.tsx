@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { claimBonus } from '@/api/bonus'
+
+import { useFingerprint } from '@/context/fingerprint-context'
 import { AUTH_TABS, ModalType, useModal } from '@/context/modal-context'
 import { useUser } from '@/context/user-context'
-import { useFingerprint } from '@/context/fingerprint-context'
 
 import { Button } from '@/components/ui/button'
 

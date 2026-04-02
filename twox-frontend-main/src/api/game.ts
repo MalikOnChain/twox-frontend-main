@@ -1,12 +1,12 @@
 import api from '@/lib/api'
 import { handleApiError } from '@/lib/error-handler'
 
+import { BlueOceanGameProviders, BlueOceanGameTypes } from '@/types/blueocean'
 import {
   TGameProvider,
   TProviderGameItem,
   TProviderGameType,
 } from '@/types/game'
-import { BlueOceanGameProviders, BlueOceanGameTypes, BlueOceanProviderAliases, BlueOceanTypeAliases } from '@/types/blueocean'
 import { TPagination } from '@/types/pagination'
 
 export interface GameDataResponse {

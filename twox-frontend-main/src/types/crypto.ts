@@ -27,8 +27,28 @@ export interface CryptoPrice {
   [key: string]: CryptoPriceValue
 }
 
+export interface WithdrawNetworkOption {
+  value: string
+  label: string
+}
+
+export interface WithdrawStablePayoutOption {
+  value: string
+  label: string
+  symbol: string
+  network: string
+}
+
 export interface WithdrawConfig {
-  withdrawMinAmount: number
-  withdrawMaxAmount: number
-  fee: number
+  withdrawMinAmount?: number
+  withdrawMaxAmount?: number
+  fee?: number
+  minWithdrawal?: number
+  maxWithdrawal?: number
+  currentBalance?: number
+  availableCurrencies?: string[]
+  withdrawalFee?: number
+  withdrawNetworks?: WithdrawNetworkOption[]
+  /** USDT/USDC × ERC20·TRC20·BSC when backend stable UI is on */
+  withdrawStablePayoutOptions?: WithdrawStablePayoutOption[]
 }

@@ -18,18 +18,16 @@ import { PromotionsProvider } from '@/context/features/promotions-context'
 import { RewardsProvider } from '@/context/features/rewards-context'
 import { TriviaProvider } from '@/context/features/trivia-context'
 import { WalletProvider } from '@/context/features/wallet/wallet-connect-context'
+import { FingerprintProvider } from '@/context/fingerprint-context'
 import { LoadingProvider } from '@/context/loading-context'
 import { MenuProvider } from '@/context/menu-context'
 import { ModalProvider } from '@/context/modal-context'
-import { ReferEarnModalProvider } from '@/context/refer-earn-modal-context'
 import { RedeemModalProvider } from '@/context/redeem-modal-context'
+import { ReferEarnModalProvider } from '@/context/refer-earn-modal-context'
 import { SocketProvider } from '@/context/socket-context'
 import { SocketHandlerProvider } from '@/context/socket-handler-context'
 import { UserProvider } from '@/context/user-context'
 import { VipProvider } from '@/context/vip-context'
-import { WalletConnectionProvider } from '@/context/wallet-connection-context'
-import { SolanaWalletProvider } from '@/context/solana-wallet-context'
-import { FingerprintProvider } from '@/context/fingerprint-context'
 
 import * as gtag from '@/lib/gtag'
 import { wagmiConfig } from '@/lib/wagmi'
@@ -85,54 +83,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
                 <BannerProvider>
                   <SocketHandlerProvider>
                     <WalletProvider>
-                      <WalletConnectionProvider>
-                        <SolanaWalletProvider>
-                          <NotificationProvider>
-                          <ChatProvider>
-                            <TriviaProvider>
-                              <BettingStatusProvider>
-                                <TransactionHistoryProvider>
-                                  <VipProvider>
-                                    <ModalProvider>
-                                      <ReferEarnModalProvider>
-                                        <RedeemModalProvider>
-                                          <MenuProvider>
-                                            <BlueOceanSync />
-                                            <GeoRestrictionChecker />
-                                            {children}
-                                          </MenuProvider>
-                                        </RedeemModalProvider>
-                                      </ReferEarnModalProvider>
-                                    </ModalProvider>
-                                  </VipProvider>
-                                </TransactionHistoryProvider>
-                              </BettingStatusProvider>
-                            </TriviaProvider>
-                          </ChatProvider>
-                          </NotificationProvider>
-                        </SolanaWalletProvider>
-                      </WalletConnectionProvider>
-                    </WalletProvider>
-                  </SocketHandlerProvider>
-                </BannerProvider>
-              </PromotionsProvider>
-            </RewardsProvider>
-          </EventProvider>
-        </SocketProvider>
-      </FingerprintProvider>
-    </FpjsProvider>
-  ) : (
-    <FingerprintProvider>
-      <SocketProvider>
-        <EventProvider>
-          <RewardsProvider>
-            <PromotionsProvider>
-              <BannerProvider>
-                <SocketHandlerProvider>
-                  <WalletProvider>
-                    <WalletConnectionProvider>
-                      <SolanaWalletProvider>
-                        <NotificationProvider>
+                      <NotificationProvider>
                         <ChatProvider>
                           <TriviaProvider>
                             <BettingStatusProvider>
@@ -154,9 +105,48 @@ const Providers = ({ children }: { children: ReactNode }) => {
                             </BettingStatusProvider>
                           </TriviaProvider>
                         </ChatProvider>
-                        </NotificationProvider>
-                      </SolanaWalletProvider>
-                    </WalletConnectionProvider>
+                      </NotificationProvider>
+                    </WalletProvider>
+                  </SocketHandlerProvider>
+                </BannerProvider>
+              </PromotionsProvider>
+            </RewardsProvider>
+          </EventProvider>
+        </SocketProvider>
+      </FingerprintProvider>
+    </FpjsProvider>
+  ) : (
+    <FingerprintProvider>
+      <SocketProvider>
+        <EventProvider>
+          <RewardsProvider>
+            <PromotionsProvider>
+              <BannerProvider>
+                <SocketHandlerProvider>
+                  <WalletProvider>
+                    <NotificationProvider>
+                      <ChatProvider>
+                        <TriviaProvider>
+                          <BettingStatusProvider>
+                            <TransactionHistoryProvider>
+                              <VipProvider>
+                                <ModalProvider>
+                                  <ReferEarnModalProvider>
+                                    <RedeemModalProvider>
+                                      <MenuProvider>
+                                        <BlueOceanSync />
+                                        <GeoRestrictionChecker />
+                                        {children}
+                                      </MenuProvider>
+                                    </RedeemModalProvider>
+                                  </ReferEarnModalProvider>
+                                </ModalProvider>
+                              </VipProvider>
+                            </TransactionHistoryProvider>
+                          </BettingStatusProvider>
+                        </TriviaProvider>
+                      </ChatProvider>
+                    </NotificationProvider>
                   </WalletProvider>
                 </SocketHandlerProvider>
               </BannerProvider>

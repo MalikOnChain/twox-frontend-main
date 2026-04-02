@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 
 import { getSpinResult, getWheelBonuses } from '@/api/wheel'
 
-import wheelModalBg from '@/assets/auth-bg.png'
-
 import { useUser } from '@/context/user-context'
 
 import { Wheel } from '@/components/modals/wheel-modal/Wheel'
 import { CustomModal } from '@/components/ui/modal'
+
+import wheelModalBg from '@/assets/auth-bg.png'
 
 interface WheelModalProps {
   open: boolean

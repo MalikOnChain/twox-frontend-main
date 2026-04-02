@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next'
 
-import { ProfileTabs } from '@/lib/profile'
-
 import BlackjackColorIcon from '@/assets/menus/colored/Blackjack.svg'
 import FavoritesColorIcon from '@/assets/menus/colored/Favorites.svg'
 import FeatureColorIcon from '@/assets/menus/colored/feature-buy-In.svg'
@@ -14,8 +12,8 @@ import ColorPopular from '@/assets/menus/colored/popular-slots.svg'
 import ColoredPromotions from '@/assets/menus/colored/Promotions.svg'
 import RecentColorIcon from '@/assets/menus/colored/Recent.svg'
 import RecommendedColoredIcon from '@/assets/menus/colored/Recommended.svg'
-import ReferEarnColorIcon from '@/assets/menus/colored/refer-earn.svg'
 import RedeemColorIcon from '@/assets/menus/colored/redeem.svg'
+import ReferEarnColorIcon from '@/assets/menus/colored/refer-earn.svg'
 import RouletteColorIcon from '@/assets/menus/colored/Roulette.svg'
 import TableGameColorIcon from '@/assets/menus/colored/TableGames.svg'
 import TwoXColoredClub from '@/assets/menus/colored/vip-program-red.svg'
@@ -31,18 +29,17 @@ import Popular from '@/assets/menus/white/popular slots.svg'
 import Promotions from '@/assets/menus/white/Promotions.svg'
 import RecentIcon from '@/assets/menus/white/Recent.svg'
 import RecommendedIcon from '@/assets/menus/white/Recommended.svg'
+import RedeemIcon from '@/assets/menus/white/redeem.svg'
+import ReferEarnIcon from '@/assets/menus/white/refer-earn.svg'
 import RouletteIcon from '@/assets/menus/white/Roulette.svg'
 import TableGameIcon from '@/assets/menus/white/Table Games.svg'
 import TwoXClub from '@/assets/menus/white/vip prgram.svg'
-import ReferEarnIcon from '@/assets/menus/white/refer-earn.svg'
-import RedeemIcon from '@/assets/menus/white/redeem.svg'
 import BonusIcon from '@/assets/profile/bonus.svg'
 import LiveSupportIcon from '@/assets/profile/live-support.svg'
 import LogoutIcon from '@/assets/profile/logout.svg'
 import NotificationsIcon from '@/assets/profile/notification.svg'
 import SettingsIcon from '@/assets/profile/settings.svg'
 import TransactionsIcon from '@/assets/profile/transactions.svg'
-import WalletIcon from '@/assets/profile/wallet.svg'
 
 import { NavigationMenu, NavItem } from '@/types/menu'
 
@@ -199,30 +196,11 @@ export function useNavigationMenu(): NavigationMenu[] {
   ]
 }
 
-export const useUserMenu = (isWalletConnected?: boolean): NavItem[] => {
+export const useUserMenu = (): NavItem[] => {
   const { t } = useTranslation()
-  
-  // Build menu items conditionally
+
   const menuItems: NavItem[] = []
-  
-  // Always show "Connect Wallet" option
-  menuItems.push({
-    icon: WalletIcon,
-    name: t('header.connect_wallet') || 'Connect Wallet',
-    to: ``,
-    action: 'connect-wallet',
-  })
-  
-  // Show "Wallet" button only if connected
-  if (isWalletConnected) {
-    menuItems.push({
-      icon: WalletIcon,
-      name: t('header.wallet'),
-      to: ``,
-    })
-  }
-  
-  // Add the rest of the menu items
+
   menuItems.push(
     {
       icon: BonusIcon,

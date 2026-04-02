@@ -1,25 +1,26 @@
 'use client'
 
+import Image from 'next/image'
 import React, { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import Banner from '@/components/pages/home/banner/banner'
-import GameGridLoader from '@/components/templates/loading/game-grid-loader'
-import GamePageLoader from '@/components/templates/loading/game-page-loader'
+import { useGameProvider } from '@/context/games/game-provider-context'
+
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
+import Banner from '@/components/pages/home/banner/banner'
+import ContentSectionDisplay from '@/components/templates/content-section/content-section'
 import GamingRanking from '@/components/templates/game-rank-table/game-rank-table'
 import LatestWinners from '@/components/templates/latest-winners/latest-winners'
+import GameGridLoader from '@/components/templates/loading/game-grid-loader'
+import GamePageLoader from '@/components/templates/loading/game-page-loader'
 import ProviderSection from '@/components/templates/provider-section/provider-section'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 
-import { useGameProvider } from '@/context/games/game-provider-context'
-import { ProviderGameType } from '@/types/game'
-
 import plusIcon from '@/assets/icons/plusicon.png'
-import Image from 'next/image'
-import ContentSectionDisplay from '@/components/templates/content-section/content-section'
+
+import { ProviderGameType } from '@/types/game'
 
 export default function FeatureBuyInGameList() {
   const {

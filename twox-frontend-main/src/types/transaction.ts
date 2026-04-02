@@ -47,6 +47,11 @@ export type CryptoTransaction = {
   _id: string
   currency: string
   status:
+    | 'PENDING'
+    | 'PROCESSING'
+    | 'COMPLETED'
+    | 'FAILED'
+    | 'CANCELLED'
     | 'TRANSACTION_REQUEST'
     | 'TRANSACTION_APPROVED'
     | 'TRANSACTION_REJECTED'

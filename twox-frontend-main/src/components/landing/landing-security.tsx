@@ -2,12 +2,12 @@
 
 import Image from 'next/image'
 
-import { SectionLabel, SectionTitle, SectionDescription } from '@/components/landing/common'
+import {SectionLabel, SectionTitle } from '@/components/landing/common'
 
-import securityBack from '@/assets/landing-page/security-back.png'
-import goldSecurityIcon from '@/assets/landing-page/gold-security-icon.png'
 import gamingKeyboard from '@/assets/landing-page/gaming-keyboard.png'
+import goldSecurityIcon from '@/assets/landing-page/gold-security-icon.png'
 import probably from '@/assets/landing-page/probably.png'
+import securityBack from '@/assets/landing-page/security-back.png'
 
 export default function LandingSecurity() {
   return (

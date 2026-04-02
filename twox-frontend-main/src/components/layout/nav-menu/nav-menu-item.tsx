@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 import React, { MouseEvent, useState } from 'react'
 
 import { useMenu } from '@/context/menu-context'
-import { useReferEarnModal } from '@/context/refer-earn-modal-context'
 import { useRedeemModal } from '@/context/redeem-modal-context'
+import { useReferEarnModal } from '@/context/refer-earn-modal-context'
 
 import { cn } from '@/lib/utils'
 

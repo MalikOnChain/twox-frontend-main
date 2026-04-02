@@ -11,7 +11,12 @@ import 'swiper/css'
 import 'swiper/css/grid'
 import 'swiper/css/navigation'
 
-import { getLatestWinners, GameStatsWinner } from '@/api/game-stats'
+import { GameStatsWinner,getLatestWinners } from '@/api/game-stats'
+
+import {
+  getMockGameStatItemsForLatestWinners,
+  shouldUseMockGameStats,
+} from '@/lib/game-rank'
 
 import { Button } from '@/components/ui/button'
 
@@ -32,11 +37,20 @@ const LatestWinners = () => {
       try {
         setLoading(true)
         const response = await getLatestWinners(20)
-        if (response.success && response.data) {
+        if (response.success && response.data?.length) {
           setWinners(response.data)
+        } else if (shouldUseMockGameStats()) {
+          setWinners(getMockGameStatItemsForLatestWinners(20))
+        } else {
+          setWinners([])
         }
       } catch (error) {
         console.error('Failed to fetch latest winners:', error)
+        if (shouldUseMockGameStats()) {
+          setWinners(getMockGameStatItemsForLatestWinners(20))
+        } else {
+          setWinners([])
+        }
       } finally {
         setLoading(false)
       }

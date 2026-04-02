@@ -5,8 +5,6 @@ import React from 'react'
 
 import { useUser } from '@/context/user-context'
 
-import { cn } from '@/lib/utils'
-
 import RankingInfoCard from '@/components/pages/(other)/RankingPage/ranking-info-card'
 import Rewards from '@/components/pages/(other)/RankingPage/rewards'
 import VIPLevelsTable from '@/components/tables/vip-Levels-table'

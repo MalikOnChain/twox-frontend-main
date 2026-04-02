@@ -5,7 +5,7 @@ export interface WalletAddress {
   blockchain: string
   network: string
   label: string
-  walletType: 'metamask' | 'phantom' | 'vaultody' | 'manual'
+  walletType: 'metamask' | 'phantom' | 'vaultody' | 'fystack' | 'manual'
   createdAt: string
 }
 
@@ -13,6 +13,7 @@ export interface GroupedWalletAddresses {
   metamask: WalletAddress[]
   phantom: WalletAddress[]
   vaultody: WalletAddress[]
+  fystack: WalletAddress[]
   manual: WalletAddress[]
 }
 
@@ -28,8 +29,11 @@ export interface WalletAddressesResponse {
 export const getWalletAddresses = async (): Promise<WalletAddressesResponse> => {
   try {
     const response = await api.get('/user/wallet/addresses')
-    
-    return response.data
+    const data = response.data
+    if (data.grouped && !data.grouped.fystack) {
+      data.grouped.fystack = []
+    }
+    return data
   } catch (error) {
     console.error('Failed to fetch wallet addresses:', error)
     throw error

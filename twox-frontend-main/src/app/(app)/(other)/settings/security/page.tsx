@@ -11,7 +11,6 @@ import SecurityLayout from '@/components/templates/security-layout/security-layo
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import CopyIcon from '@/assets/profile/copy.svg'
 
 // Password validation schema
 const passwordSchema = yup.object({

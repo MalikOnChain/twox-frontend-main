@@ -3,20 +3,22 @@ import React, { Suspense } from 'react'
 import { getBonuses } from '@/api/server/bonus'
 import { getLoyaltyTiers } from '@/api/server/loyalty-tier'
 import { getSettings } from '@/api/server/settings'
-import {
-  SITE_BRAND_LOGO_SYMBOL_URL,
-  SITE_BRAND_LOGO_URL,
-  resolveSiteLogoUrl,
-} from '@/lib/site-brand-defaults'
-import { SiteSettings } from '@/types/site-settings'
 
 import { InitialSettingsContextProvider } from '@/context/initial-settings-context'
+
+import {
+  resolveSiteLogoUrl,
+  SITE_BRAND_LOGO_SYMBOL_URL,
+  SITE_BRAND_LOGO_URL,
+} from '@/lib/site-brand-defaults'
 
 import ServerError from '@/components/error/ServerError'
 import MainLayout from '@/components/layout/main-layout/main-layout'
 import MainLoading from '@/components/templates/loading/main-loading'
 
 import Providers from '@/app/providers'
+
+import { SiteSettings } from '@/types/site-settings'
 
 const defaultSettings: SiteSettings = {
   depositMinAmount: 10,

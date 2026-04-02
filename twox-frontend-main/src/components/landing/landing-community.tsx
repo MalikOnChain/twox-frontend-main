@@ -2,13 +2,11 @@
 
 import Image from 'next/image'
 
-import { SectionLabel, SectionTitle, SectionDescription } from '@/components/landing/common'
+import { SectionDescription,SectionLabel, SectionTitle } from '@/components/landing/common'
 
-import XIcon from '@/assets/social/x.svg'
-import TelegramIcon from '@/assets/social/telegram-colored.svg'
-
-import mapBackground from '@/assets/landing-page/map-background.png'
 import faces from '@/assets/landing-page/faces.png'
+import mapBackground from '@/assets/landing-page/map-background.png'
+import TelegramIcon from '@/assets/social/telegram-colored.svg'
 
 export default function LandingCommunity() {
   return (

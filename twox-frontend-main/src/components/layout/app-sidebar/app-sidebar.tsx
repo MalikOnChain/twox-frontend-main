@@ -5,10 +5,11 @@ import Image from 'next/image'
 import React, { memo, Suspense, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { getSiteStats } from '@/api/site'
+
 import { useMenu } from '@/context/menu-context'
 import { useModal } from '@/context/modal-context'
 
-import { getSiteStats } from '@/api/site'
 import { useNavigationMenu } from '@/lib/menu'
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/hooks/features/use-media-query'

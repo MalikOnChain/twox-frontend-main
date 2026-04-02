@@ -3,8 +3,8 @@
 import { X } from 'lucide-react'
 import Image from 'next/image'
 
-import { CustomModal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
+import { CustomModal } from '@/components/ui/modal'
 
 import crownIcon from '@/assets/landing-page/crown.png'
 import TelegramIcon from '@/assets/social/telegram-colored.svg'
