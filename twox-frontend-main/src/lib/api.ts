@@ -26,6 +26,20 @@ export const api: AxiosInstance = axios.create({
 // Constants
 const AUTH_TOKEN_HEADER = 'x-auth-token'
 
+/** Do not treat failed login / token exchange as "session expired" (avoid redirect + broken UX). */
+function isAuthCredentialRequest(config: { method?: string; url?: string }): boolean {
+  const method = (config.method || 'get').toLowerCase()
+  if (method !== 'post') return false
+  const url = config.url || ''
+  const suffixes = [
+    '/auth/registration/login',
+    '/auth/registration/register',
+    '/auth/signin',
+    '/auth/exchange-token',
+  ]
+  return suffixes.some((p) => url === p || url.endsWith(p))
+}
+
 /**
  * Add request interceptor to handle authentication and timezone
  */
@@ -70,15 +84,19 @@ api.interceptors.response.use(
       )
     }
 
-    // Handle authentication errors
-    if (error.response.status === 403) {
-      // Handle expired refresh token
-      tokenStorage.removeValue()
-      // Redirect to login page
-      window.location.href = '/'
-      // Adding a small delay before rejecting to allow redirect to complete
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-
+    // Session invalid: only redirect if we actually had a token (guest 403s must surface errors, e.g. game list)
+    const status = error.response.status
+    if (status === 403 || status === 401) {
+      const hadToken = Boolean(tokenStorage.getValue())
+      if (
+        hadToken &&
+        error.config &&
+        !isAuthCredentialRequest(error.config)
+      ) {
+        tokenStorage.removeValue()
+        window.location.href = '/'
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+      }
       return Promise.reject(error)
     }
 
