@@ -58,6 +58,7 @@ export const BLOCKCHAIN_PROTOCOL_NAME = {
   POLYGON: 'polygon',
   AVALANCHE: 'avalanche',
   ARBITRUM: 'arbitrum',
+  SOLANA: 'solana',
 }
 
 export enum USDT_NETWORKS {

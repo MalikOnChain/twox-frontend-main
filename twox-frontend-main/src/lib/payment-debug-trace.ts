@@ -20,5 +20,5 @@ export function paymentDebugTraceClient(payload: {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': AGENT_DEBUG_SESSION },
     body,
-  }).catch(() => {})
+  }).catch(() => undefined)
 }

@@ -24,7 +24,8 @@ const TransactionsPage = () => {
           page: nextPage,
           limit,
         })
-        setTableData((response.transactions || []) as CryptoTransaction[])
+        // API ledger rows are a superset-compatible shape at runtime; table expects CryptoTransaction
+        setTableData((response.transactions || []) as unknown as CryptoTransaction[])
         setTotalPages(response.pagination.totalPages || 1)
         setPage(response.pagination.currentPage || nextPage)
       } catch (error) {

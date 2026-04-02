@@ -96,9 +96,10 @@ const CryptoWithdrawContent: React.FC = () => {
 
   // Create form schema with dynamic min/max values
   const formSchema = useMemo(() => {
-    const minAmount = config?.withdrawMinAmount
-      ? config.withdrawMinAmount + config.fee
-      : 0
+    const minAmount =
+      config?.withdrawMinAmount != null
+        ? config.withdrawMinAmount + (config.fee ?? 0)
+        : 0
     const maxAmount = user?.balance || 0
     return createWithdrawFormSchema(minAmount, maxAmount)
   }, [config, user])
@@ -392,7 +393,7 @@ const CryptoWithdrawContent: React.FC = () => {
                 {/* <span className='min-w-4'>
                   <CoinIcon />
                 </span> */}
-                <span className='text-white'>{`${precisionNumber(config.withdrawMinAmount + config.fee)}`}</span>
+                <span className='text-white'>{`${precisionNumber((config?.withdrawMinAmount ?? 0) + (config?.fee ?? 0))}`}</span>
               </span>
             </div>
           </div>
