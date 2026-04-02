@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as yup from 'yup'
 
-import { requestSelfExclusion, confirmSelfExclusion } from '@/api/responsible-gambling'
+import { confirmSelfExclusion,requestSelfExclusion } from '@/api/responsible-gambling'
 
 import SecurityLayout from '@/components/templates/security-layout/security-layout'
 import { Button } from '@/components/ui/button'

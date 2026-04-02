@@ -1,14 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
+import { useState } from 'react'
 
-import { Button } from '@/components/ui/button'
 import { TawkChatModal } from '@/components/modals/tawk-chat-modal'
+import { Button } from '@/components/ui/button'
 
-import footerBack from '@/assets/landing-page/footer-back.png'
 import chatIcon from '@/assets/icons/chat.png'
+import footerBack from '@/assets/landing-page/footer-back.png'
 
 export default function LandingFooter() {
   const [chatModalOpen, setChatModalOpen] = useState(false)

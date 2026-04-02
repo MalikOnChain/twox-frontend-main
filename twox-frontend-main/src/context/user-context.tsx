@@ -15,6 +15,10 @@ import { toast } from 'sonner'
 import { exchangeToken, getUser, verifyEmail } from '@/api/auth'
 
 import {
+  setAuthSessionCookie,
+  syncAuthSessionCookieFromStorage,
+} from '@/lib/auth-session-cookie'
+import {
   BLOCKCHAIN_PROTOCOL_NAME,
   USDT_NETWORKS,
   UsdtDepositAddress,
@@ -117,6 +121,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setBalance(balance)
         setDepositAddresses(depositAddresses)
         setIsAuthenticated(true)
+        setAuthSessionCookie()
         setIdentifier('')
         const { removeValue } = storageHandler({ key: 'ref' })
         removeValue()
@@ -145,6 +150,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setBalance(balance)
       setDepositAddresses(depositAddresses)
       setIsAuthenticated(true)
+      setAuthSessionCookie()
 
       const { removeValue } = storageHandler({ key: 'ref' })
       removeValue()
@@ -228,6 +234,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     getLoggedInUser()
   }, [getLoggedInUser])
+
+  useEffect(() => {
+    syncAuthSessionCookieFromStorage()
+  }, [])
 
   const value = useMemo(
     () => ({

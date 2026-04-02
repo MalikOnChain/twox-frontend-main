@@ -4,6 +4,7 @@ import { toast } from 'sonner'
 import { claimBonus } from '@/api/bonus'
 
 import { useFingerprint } from '@/context/fingerprint-context'
+
 import { Button } from '@/components/ui/button'
 import { CustomModal } from '@/components/ui/modal'
 

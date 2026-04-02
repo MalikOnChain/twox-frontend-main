@@ -1,5 +1,5 @@
 import { StaticImageData } from 'next/image'
-import { BlueOceanGameTypes, BlueOceanGameProviders } from './blueocean'
+
 
 export enum ProviderGameType {
   SLOT = 'video-slots',
@@ -75,5 +75,5 @@ export enum GAME_RESULT {
 }
 
 // Re-export BlueOcean types for easier usage
-export { BlueOceanGameTypes, BlueOceanGameProviders } from './blueocean'
-export type { BlueOceanProviderType, BlueOceanGameType } from './blueocean'
+export type { BlueOceanGameType,BlueOceanProviderType } from './blueocean'
+export { BlueOceanGameProviders,BlueOceanGameTypes } from './blueocean'

@@ -5,9 +5,7 @@ import { getPromotions, Promotion } from '@/api/promotion'
 
 import PromotionItem from '@/components/pages/(other)/promotion/promotion-item'
 import Banner from '@/components/pages/home/banner/banner'
-import promotionImg1 from '@/assets/promotion/promotion1.png'
-import promotionImg2 from '@/assets/promotion/promotion2.png'
-import promotionImg3 from '@/assets/promotion/promotion3.png'
+
 
 const PromotionList = () => {
   const [promotions, setPromotions] = useState<Promotion[]>([])

@@ -1,15 +1,15 @@
-import WelcomeBanner from '@/components/pages/home/banner/welcome-banner'
 import BonusBannerWithPagination from '@/components/pages/home/banner/bonus-banner-with-pagination'
 import CryptoSupportBanner from '@/components/pages/home/banner/crypto-support-banner'
+import WelcomeBanner from '@/components/pages/home/banner/welcome-banner'
 import CryptoPrices from '@/components/pages/home/crypto-prices/crypto-prices'
 import GameShows from '@/components/pages/home/game-shows/game-shows'
 import LiveCasinoList from '@/components/pages/home/live-casino-list/live-casino-list'
 import PopularGames from '@/components/pages/home/popular-game/popular-game'
 import RecommendedGames from '@/components/pages/home/recommended-games/recommended-games'
+import ContentSectionDisplay from '@/components/templates/content-section/content-section'
 import GamingRanking from '@/components/templates/game-rank-table/game-rank-table'
 import LatestWinners from '@/components/templates/latest-winners/latest-winners'
 import ProviderSection from '@/components/templates/provider-section/provider-section'
-import ContentSectionDisplay from '@/components/templates/content-section/content-section'
 
 export default function Home() {
   return (

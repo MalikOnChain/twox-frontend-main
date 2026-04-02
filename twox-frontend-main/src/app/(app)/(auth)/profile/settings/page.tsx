@@ -25,6 +25,7 @@ import { Separator } from '@/components/ui/separator'
 import { profileInfoFormSchema, ProfileInfoFormValues } from '@/schema/auth'
 
 import TwoFactor from '@/assets/2fa.svg'
+import settingsCardBg from '@/assets/header-bg.png'
 import GoogleIcon from '@/assets/social/google-red.svg'
 
 import { AUTH_PROVIDER_KEYS } from '@/types/auth'
@@ -180,7 +181,10 @@ const SettingsPage = () => {
         </Card>
 
         <div className='flex flex-1 flex-col justify-start gap-2 sm:flex-row sm:gap-5 3xl:flex-[0.4] 3xl:flex-col'>
-          <div className='flex flex-[0.5] rounded-2xl bg-[url("/background/gradient-card-bg.png")] bg-cover bg-no-repeat p-6'>
+          <div
+            className='flex flex-[0.5] rounded-2xl bg-cover bg-no-repeat p-6'
+            style={{ backgroundImage: `url(${settingsCardBg.src})` }}
+          >
             <div className='flex flex-1 items-center justify-center'>
               <TwoFactor className='flex-[0.4]' />
               <div className='flex flex-1 flex-col'>
@@ -201,7 +205,10 @@ const SettingsPage = () => {
             </div>
           </div>
 
-          <div className='flex flex-[0.5] rounded-2xl bg-[url("/background/gradient-card-bg.png")] bg-cover bg-no-repeat p-6'>
+          <div
+            className='flex flex-[0.5] rounded-2xl bg-cover bg-no-repeat p-6'
+            style={{ backgroundImage: `url(${settingsCardBg.src})` }}
+          >
             <div className='flex items-center justify-center'>
               <div className='flex flex-[0.4] items-center justify-center'>
                 <LogOut className='-ml-[20px] h-12 w-12' />

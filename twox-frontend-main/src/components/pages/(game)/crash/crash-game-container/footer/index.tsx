@@ -2,11 +2,10 @@ import { Maximize2, Minimize2 } from 'lucide-react'
 import Image from 'next/image'
 import React, { memo } from 'react'
 
+import { MainLogo as Logo } from '@/lib/logo'
 import { cn } from '@/lib/utils'
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-
-import Logo from '@/assets/brand/logo.webp'
 
 import { GamePlayMode, ProviderGameType, TProviderGameType } from '@/types/game'
 

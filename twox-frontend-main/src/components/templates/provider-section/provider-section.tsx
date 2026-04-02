@@ -13,11 +13,12 @@ import 'swiper/css/grid'
 import 'swiper/css/navigation'
 
 import { getGamesProviders } from '@/api/game'
-import { TGameProvider } from '@/types/game'
 
 import { Button } from '@/components/ui/button'
 
 import popularIcon from '@/assets/banner/icon/provider.png'
+
+import { TGameProvider } from '@/types/game'
 
 const ProviderSection = () => {
   const [isBeginning, setIsBeginning] = useState<boolean>(true)

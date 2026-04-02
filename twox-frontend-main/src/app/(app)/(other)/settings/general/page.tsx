@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as yup from 'yup'
 
-import { sendEmailChangeCode, changeEmail, updatePhoneNumber } from '@/api/user-settings'
+import { changeEmail, sendEmailChangeCode, updatePhoneNumber } from '@/api/user-settings'
 
 import { useUser } from '@/context/user-context'
 

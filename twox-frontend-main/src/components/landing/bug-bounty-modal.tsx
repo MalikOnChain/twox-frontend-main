@@ -1,9 +1,9 @@
 'use client'
 
-import { X, Info } from 'lucide-react'
+import { Info,X } from 'lucide-react'
 
-import { CustomModal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
+import { CustomModal } from '@/components/ui/modal'
 
 interface BugBountyModalProps {
   open: boolean

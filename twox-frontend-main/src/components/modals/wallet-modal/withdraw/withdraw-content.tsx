@@ -152,15 +152,22 @@ const CryptoWithdrawContent: React.FC = () => {
   // Form submission handler
   const onSubmit = async (data: WithdrawFormValues) => {
     try {
-      if (data.currency === CRYPTO_TOKENS.USDT && data.network) {
-        const blockchain =
-          data.network === USDT_NETWORKS.TRC20
-            ? BLOCKCHAIN_PROTOCOL_NAME.TRON
-            : BLOCKCHAIN_PROTOCOL_NAME.ETHEREUM
+      const mapUsdtRail = (n: string) => {
+        if (n === USDT_NETWORKS.TRC20) return 'TRC20'
+        if (n === USDT_NETWORKS.BEP20) return 'BSC'
+        return 'ERC20'
+      }
+      const networkForNativeCurrency = () => {
+        if (data.currency === BLOCKCHAIN_PROTOCOL_NAME.TRON) return 'TRC20'
+        if (data.currency === BLOCKCHAIN_PROTOCOL_NAME.BINANCE_SMART_CHAIN) return 'BSC'
+        if (data.currency === BLOCKCHAIN_PROTOCOL_NAME.SOLANA) return 'SOL'
+        return 'ERC20'
+      }
 
+      if (data.currency === CRYPTO_TOKENS.USDT && data.network) {
         const response = await sendCryptoWithdrawRequest({
-          symbol: data.network,
-          blockchain: blockchain,
+          symbol: 'USDT',
+          network: mapUsdtRail(data.network),
           address: data.address,
           amount: data.amount,
         })
@@ -168,7 +175,7 @@ const CryptoWithdrawContent: React.FC = () => {
       } else {
         const response = await sendCryptoWithdrawRequest({
           symbol: selectedNetworkData.symbol,
-          blockchain: data.currency,
+          network: networkForNativeCurrency(),
           address: data.address,
           amount: data.amount,
         })

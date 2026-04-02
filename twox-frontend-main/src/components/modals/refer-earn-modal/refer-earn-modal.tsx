@@ -1,19 +1,16 @@
 'use client'
 
+import { Copy,X } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { toast } from 'sonner'
-import { X, Copy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
 
 import { getUserReferralMetrics } from '@/api/bonus'
 
-import { useUser } from '@/context/user-context'
 import { useProfile } from '@/context/data/profile-context'
 import { useInitialSettingsContext } from '@/context/initial-settings-context'
-
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { useUser } from '@/context/user-context'
 
 import frameImg from '@/assets/images/frame_img.png'
 

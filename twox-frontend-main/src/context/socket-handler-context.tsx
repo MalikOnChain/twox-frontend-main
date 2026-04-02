@@ -74,7 +74,7 @@ export function SocketHandlerProvider({
     if (!socket) return
     socket.on(SOCKET_LISTEN_EVENTS.TOKEN_BALANCE_UPDATE, balanceUpdate)
     return () => {
-      socket.off(SOCKET_LISTEN_EVENTS.TOKEN_BALANCE_UPDATE)
+      socket.off(SOCKET_LISTEN_EVENTS.TOKEN_BALANCE_UPDATE, balanceUpdate)
     }
   }, [socket, balanceUpdate])
 
@@ -82,7 +82,7 @@ export function SocketHandlerProvider({
     if (!socket) return
     socket.on(SOCKET_LISTEN_EVENTS.VIP_TIER_UP, vipTierUp)
     return () => {
-      socket.off(SOCKET_LISTEN_EVENTS.VIP_TIER_UP)
+      socket.off(SOCKET_LISTEN_EVENTS.VIP_TIER_UP, vipTierUp)
     }
   }, [socket, vipTierUp])
 

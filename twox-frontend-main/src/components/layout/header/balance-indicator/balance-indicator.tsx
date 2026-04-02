@@ -1,22 +1,34 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useUser } from '@/context/user-context'
 
 import parseCommasToThousands from '@/lib/number'
+import {
+  PREFERRED_PLAY_STABLE_EVENT,
+  PREFERRED_PLAY_STABLE_STORAGE_KEY,
+  readPreferredPlayStable,
+} from '@/lib/play-stable-preference'
 import { cn } from '@/lib/utils'
 
+import { FystackChainBadge } from '@/components/layout/header/deposit-withdraw-modal/fystack-chain-badge'
+import {
+  parseStableWithdrawValue,
+  stableWithdrawChainAbbrev,
+  stableWithdrawNetworkBlockchain,
+} from '@/components/layout/header/deposit-withdraw-modal/fystack-stablecoins-ui'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import CoinIcon from '@/assets/icons/dollar.svg'
 import WalletIcon from '@/assets/wallet.svg'
+
+const DEFAULT_PLAY_STABLE = 'USDT:ERC20'
 
 const BalanceIndicator = ({
   openDepositWithdrawModal,
@@ -25,7 +37,7 @@ const BalanceIndicator = ({
   openDepositWithdrawModal: () => void
   openBalanceModal: () => void
 }) => {
-  const { balance } = useUser()
+  const { balance, getLoggedInUser, isAuthenticated } = useUser()
   const totalBalance = parseCommasToThousands(balance?.totalBalance || 0)
   const freeSpinBalance = parseInt(String(balance?.freeSpinBalance)) || 0
   const triggerRef = useRef<HTMLSpanElement>(null)
@@ -41,6 +53,34 @@ const BalanceIndicator = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const balanceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
+  const [playStableValue, setPlayStableValue] = useState(DEFAULT_PLAY_STABLE)
+
+  const { chainSlug, chainAbbrev } = useMemo(() => {
+    const { network } = parseStableWithdrawValue(playStableValue)
+    return {
+      chainSlug: stableWithdrawNetworkBlockchain(network),
+      chainAbbrev: stableWithdrawChainAbbrev(network),
+    }
+  }, [playStableValue])
+
+  useLayoutEffect(() => {
+    const v = readPreferredPlayStable()
+    if (v) setPlayStableValue(v)
+  }, [])
+
+  useEffect(() => {
+    const sync = () =>
+      setPlayStableValue(readPreferredPlayStable() ?? DEFAULT_PLAY_STABLE)
+    window.addEventListener(PREFERRED_PLAY_STABLE_EVENT, sync)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === PREFERRED_PLAY_STABLE_STORAGE_KEY) sync()
+    }
+    window.addEventListener('storage', onStorage)
+    return () => {
+      window.removeEventListener(PREFERRED_PLAY_STABLE_EVENT, sync)
+      window.removeEventListener('storage', onStorage)
+    }
+  }, [])
 
   useEffect(() => {
     const updatedBalance = balance?.totalBalance || 0
@@ -83,6 +123,15 @@ const BalanceIndicator = ({
       }
     }
   }, [balance?.totalBalance])
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+    const onVis = () => {
+      if (document.visibilityState === 'visible') void getLoggedInUser()
+    }
+    document.addEventListener('visibilitychange', onVis)
+    return () => document.removeEventListener('visibilitychange', onVis)
+  }, [isAuthenticated, getLoggedInUser])
 
   // useLayoutEffect(() => {
   //   if (triggerRef.current) {
@@ -128,7 +177,14 @@ const BalanceIndicator = ({
                 >
                   ${`${totalBalance}`}
                 </span>
-                <CoinIcon />
+                <span className='flex items-center gap-1 md:gap-1.5'>
+                  <span className='flex size-5 shrink-0 items-center justify-center md:size-6'>
+                    <FystackChainBadge blockchain={chainSlug} size={20} />
+                  </span>
+                  <span className='font-satoshi text-[10px] font-bold uppercase tracking-wide text-white md:text-xs'>
+                    {chainAbbrev}
+                  </span>
+                </span>
               </span>
               <div
                 className='flex h-6 w-6 items-center justify-center rounded bg-[#FFFFFF1A]'

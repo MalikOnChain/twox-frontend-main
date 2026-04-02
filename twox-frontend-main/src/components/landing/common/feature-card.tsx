@@ -1,6 +1,6 @@
+import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 import { ReactNode } from 'react'
-import type { StaticImageData } from 'next/image'
 
 import DetailsButton from './details-button'
 

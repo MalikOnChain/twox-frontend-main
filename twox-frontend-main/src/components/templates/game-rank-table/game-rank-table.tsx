@@ -2,15 +2,23 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { GameDataTypes } from '@/lib/game-rank'
 import {
-  getLatestWinners,
-  getHighRollers,
-  getBestMultipliers,
-  getTopWinners,
   GameStatItem,
+  GameStatsResponse,
+  getBestMultipliers,
+  getHighRollers,
+  getLatestWinners,
+  getTopWinners,
 } from '@/api/game-stats'
 
+import { GameDataTypes } from '@/lib/game-rank'
+import {
+  type TabData,
+  dummyData,
+  shouldUseMockGameStats,
+} from '@/lib/game-rank'
+
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -19,7 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Skeleton } from '@/components/ui/skeleton'
 
 const GameTable: React.FC<{ data: GameDataTypes[] }> = ({ data }) => {
   const formatNumber = (num: number): string => {
@@ -138,6 +145,23 @@ const transformGameStatItem = (item: GameStatItem): GameDataTypes => ({
   currency: item.currency,
 })
 
+function resolveStatTab(
+  result: PromiseSettledResult<GameStatsResponse>,
+  mockKey: keyof TabData
+): GameDataTypes[] {
+  if (
+    result.status === 'fulfilled' &&
+    result.value.success &&
+    result.value.data?.length
+  ) {
+    return result.value.data.map(transformGameStatItem)
+  }
+  if (shouldUseMockGameStats()) {
+    return dummyData[mockKey]
+  }
+  return []
+}
+
 const GamingRanking: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('Latest Wins')
   const [data, setData] = useState<{ [key: string]: GameDataTypes[] }>({
@@ -159,27 +183,31 @@ const GamingRanking: React.FC = () => {
         setLoading(true)
         setError(null)
 
-        const [latestWins, highRollers, bestMultipliers, winnersDay, winnersMonth] =
-          await Promise.all([
-            getLatestWinners(8),
-            getHighRollers(5, 'day'),
-            getBestMultipliers(5, 'day'),
-            getTopWinners(4, 'day'),
-            getTopWinners(4, 'month'),
-          ])
+        const results = await Promise.allSettled([
+          getLatestWinners(8),
+          getHighRollers(5, 'day'),
+          getBestMultipliers(5, 'day'),
+          getTopWinners(4, 'day'),
+          getTopWinners(4, 'month'),
+        ])
 
-        console.log('🎮 Game Ranking Data:', {
-          latestWins: latestWins.data[0],
-          highRollers: highRollers.data[0],
-        })
+        const next = {
+          'Latest Wins': resolveStatTab(results[0], 'Latest Wins'),
+          'High Rollers': resolveStatTab(results[1], 'High Rollers'),
+          'Best Multipliers': resolveStatTab(results[2], 'Best Multipliers'),
+          'Winners of the Day': resolveStatTab(results[3], 'Winners of the Day'),
+          'Winners of the Month': resolveStatTab(results[4], 'Winners of the Month'),
+        }
 
-        setData({
-          'Latest Wins': latestWins.data.map(transformGameStatItem),
-          'High Rollers': highRollers.data.map(transformGameStatItem),
-          'Best Multipliers': bestMultipliers.data.map(transformGameStatItem),
-          'Winners of the Day': winnersDay.data.map(transformGameStatItem),
-          'Winners of the Month': winnersMonth.data.map(transformGameStatItem),
-        })
+        const hasAnyData = Object.values(next).some((rows) => rows.length > 0)
+        const anyRejected = results.some((r) => r.status === 'rejected')
+
+        setData(next)
+        if (!hasAnyData && anyRejected) {
+          setError('Failed to load data')
+        } else {
+          setError(null)
+        }
       } catch (err) {
         console.error('Failed to fetch game ranking data:', err)
         setError(err instanceof Error ? err.message : 'Failed to load data')

@@ -7,7 +7,6 @@ import GameList from '@/components/pages/(game)/slots-casino/game-list/game-list
 import CasinoBanner from '@/components/pages/home/banner/casino-banner'
 
 import { BannerSection } from '@/types/banner'
-import { ProviderGameType } from '@/types/game'
 
 const LiveCasinoListPage = () => {
   const { banners } = useBanner({ section: BannerSection.CASINO })

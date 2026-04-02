@@ -384,15 +384,15 @@ export function CryptoTransactionHistoryTable({
           </Button>
           <Button
             variant={
-              table.getColumn('type')?.getFilterValue() === 'WITHDRAWAL'
+              table.getColumn('type')?.getFilterValue() === 'WITHDRAW'
                 ? 'default'
                 : 'secondary1'
             }
             onClick={() => {
-              if (table.getColumn('type')?.getFilterValue() === 'WITHDRAWAL') {
+              if (table.getColumn('type')?.getFilterValue() === 'WITHDRAW') {
                 table.getColumn('type')?.setFilterValue(null)
               } else {
-                table.getColumn('type')?.setFilterValue('WITHDRAWAL')
+                table.getColumn('type')?.setFilterValue('WITHDRAW')
               }
             }}
             className='px-2 lg:px-3'

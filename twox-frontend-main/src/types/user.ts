@@ -57,6 +57,8 @@ export interface IUser {
   discordId?: string
   telegramId?: string
   email: string
+  /** Present when returned from `/user`; used for admin UI (e.g. link to admin panel). */
+  role?: 'user' | 'admin' | 'gesture'
   referralCode: string
   hasPassword: boolean
   spinCount: number

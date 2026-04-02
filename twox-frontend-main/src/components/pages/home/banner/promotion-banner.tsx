@@ -21,7 +21,7 @@ const PromotionBanner = () => {
 
   const handleClick = () => {
     if (isAuthenticated) {
-      setType(ModalType.Pix)
+      setType(ModalType.DepositWithdraw)
       setIsOpen(true)
     } else {
       setType(ModalType.Auth)

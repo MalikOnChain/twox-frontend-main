@@ -1,12 +1,12 @@
 'use client'
 
-import { SectionLabel, SectionTitle, SectionDescription, ImageCard } from '@/components/landing/common'
+import { ImageCard,SectionDescription, SectionLabel, SectionTitle } from '@/components/landing/common'
 
-import playProgress from '@/assets/landing-page/play_progress.jpg'
-import rewardedLoyalty from '@/assets/landing-page/rewarded_loyalty.jpg'
+import builtLongGame from '@/assets/landing-page/built_longgame.jpg'
 import exclusiveAccess from '@/assets/landing-page/exclusive_access.jpg'
 import fairValueBack from '@/assets/landing-page/fair_value_black.jpg'
-import builtLongGame from '@/assets/landing-page/built_longgame.jpg'
+import playProgress from '@/assets/landing-page/play_progress.jpg'
+import rewardedLoyalty from '@/assets/landing-page/rewarded_loyalty.jpg'
 
 export default function LandingAbout() {
   return (

@@ -1,15 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { useState } from 'react'
 
-import { LandingHeader, CTAButton } from '@/components/landing/common'
-import LandingAuthModal from '@/components/landing/landing-auth-modal'
-import JoinBetaModal from '@/components/landing/join-beta-modal'
-import { Button } from '@/components/ui/button'
 import { MainLogo } from '@/lib/logo'
+
+import { CTAButton,LandingHeader } from '@/components/landing/common'
+import JoinBetaModal from '@/components/landing/join-beta-modal'
+import LandingAuthModal from '@/components/landing/landing-auth-modal'
+import { Button } from '@/components/ui/button'
 
 import gradientBackground from '@/assets/landing-page/gradient-background.png'
 import gradientBackgroundSp from '@/assets/landing-page/gradient-background-sp.png'

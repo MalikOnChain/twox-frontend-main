@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
+import { useState } from 'react'
 
-import { Button } from '@/components/ui/button'
 import { TawkChatModal } from '@/components/modals/tawk-chat-modal'
+import { Button } from '@/components/ui/button'
 
 import chatIcon from '@/assets/icons/chat.png'
 

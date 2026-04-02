@@ -1,16 +1,16 @@
 'use client'
 
+import { Edit, Eye, EyeOff,Plus, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
-  getAllBonusBanners,
-  createBonusBanner,
-  updateBonusBanner,
-  deleteBonusBanner,
-  toggleBonusBannerStatus,
   BonusBanner,
+  createBonusBanner,
+  deleteBonusBanner,
+  getAllBonusBanners,
+  toggleBonusBannerStatus,
+  updateBonusBanner,
 } from '@/api/bonus-banner'
 
 import { Button } from '@/components/ui/button'
@@ -25,6 +25,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
+
+import bonusBannerSpinFallback from '@/assets/images/spin_img.png'
 
 export default function BonusBannersAdminPage() {
   const [banners, setBanners] = useState<BonusBanner[]>([])
@@ -346,7 +348,7 @@ export default function BonusBannersAdminPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, image: e.target.value })
                   }
-                  placeholder='/images/bonus/spin.png'
+                  placeholder={bonusBannerSpinFallback.src}
                   required
                 />
               </div>

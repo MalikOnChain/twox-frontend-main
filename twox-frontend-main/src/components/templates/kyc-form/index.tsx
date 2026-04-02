@@ -5,13 +5,12 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { getKYCStatus, getSumsubWebSDKAccessToken } from '@/api/profile'
 
+import { MainLogo } from '@/lib/logo'
 import { cn } from '@/lib/utils'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-
-import LogoWithText from '@/assets/brand/logo.webp'
 
 import { ADMIN_REVIEW_STATUS, KYC_STATUS, KYCStatus } from '@/types/user'
 
@@ -229,7 +228,7 @@ const KYCForm = () => {
               <>
                 <div className='header flex h-[60px] min-h-[60px] w-full items-center justify-start rounded-t-xl bg-secondary px-10'>
                   <Image
-                    src={LogoWithText}
+                    src={MainLogo}
                     alt='logo'
                     width={0}
                     height={0}

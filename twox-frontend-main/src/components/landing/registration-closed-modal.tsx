@@ -1,10 +1,10 @@
 'use client'
 
-import Image from 'next/image'
 import { X } from 'lucide-react'
+import Image from 'next/image'
 
-import { CustomModal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
+import { CustomModal } from '@/components/ui/modal'
 
 import closedIcon from '@/assets/landing-page/closed.png'
 

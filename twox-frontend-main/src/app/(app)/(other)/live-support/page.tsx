@@ -1,7 +1,7 @@
 'use client'
 
+import { Clock, Mail, MessageCircle, Phone,Users, Zap } from 'lucide-react'
 import React, { useState } from 'react'
-import { MessageCircle, Clock, Users, Zap, Mail, Phone } from 'lucide-react'
 
 const LiveSupport = () => {
   const [chatLoaded, setChatLoaded] = useState(false)

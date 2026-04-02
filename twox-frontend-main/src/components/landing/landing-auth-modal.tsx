@@ -1,31 +1,38 @@
 'use client'
 
-import { useState } from 'react'
-import { X, ArrowRight, Check } from 'lucide-react'
-import Link from 'next/link'
-import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { toast } from 'sonner'
 import Cookies from 'js-cookie'
+import { ArrowRight, Check,X } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import { CustomModal } from '@/components/ui/modal'
+import { waitingListExchangeToken, waitingListOAuthLogin,waitingListSignIn, waitingListSignUp } from '@/api/auth'
+
+import { getErrorMessage } from '@/lib/error-handler'
+import {
+  clearRememberedLoginCredentials,
+  getRememberedLoginCredentials,
+  saveRememberedLoginCredentials,
+} from '@/lib/remember-login-credentials'
+import storageHandler from '@/lib/storage-utils'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
-import { waitingListSignIn, waitingListSignUp, waitingListExchangeToken, waitingListOAuthLogin } from '@/api/auth'
-import { AUTH_PROVIDER_KEYS } from '@/types/auth'
-import storageHandler from '@/lib/storage-utils'
-import { useRouter } from 'next/navigation'
-import { getErrorMessage } from '@/lib/error-handler'
+import { CustomModal } from '@/components/ui/modal'
 
 import { LoginFormValues, loginSchema } from '@/schema/auth'
 import { RegisterFormValues, registerSchema } from '@/schema/auth'
 
+import DiscordIcon from '@/assets/social/discord-colored.svg'
 import GoogleIcon from '@/assets/social/google.svg'
 import TelegramIcon from '@/assets/social/telegram-colored.svg'
-import DiscordIcon from '@/assets/social/discord-colored.svg'
 
 import RegistrationClosedModal from './registration-closed-modal'
+
+import { AUTH_PROVIDER_KEYS } from '@/types/auth'
 
 interface LandingAuthModalProps {
   open: boolean
@@ -49,11 +56,21 @@ export default function LandingAuthModal({ open, onOpenChange }: LandingAuthModa
   const {
     register: registerLogin,
     handleSubmit: handleLoginSubmit,
+    reset: resetLogin,
     formState: { errors: loginErrors },
   } = useForm<LoginFormValues>({
     resolver: yupResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   })
+
+  useEffect(() => {
+    if (!open || activeTab !== 'login') return
+    const saved = getRememberedLoginCredentials()
+    if (saved) {
+      resetLogin({ email: saved.email, password: saved.password })
+      setRememberMe(true)
+    }
+  }, [open, activeTab, resetLogin])
 
   const {
     register: registerSignup,
@@ -80,10 +97,16 @@ export default function LandingAuthModal({ open, onOpenChange }: LandingAuthModa
         // Exchange identifier for token
         const { token } = await waitingListExchangeToken(response.identifier)
         setToken(token)
-        
+
+        if (rememberMe) {
+          saveRememberedLoginCredentials(data.email, data.password)
+        } else {
+          clearRememberedLoginCredentials()
+        }
+
         // Set authentication cookie for middleware
         Cookies.set('isAuthenticated', 'true', { expires: 7 }) // Cookie expires in 7 days
-        
+
         // Close modal
         onOpenChange(false)
         toast.success('Login successful')

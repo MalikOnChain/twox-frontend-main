@@ -3,9 +3,14 @@ import React, { Suspense } from 'react'
 import { getBonuses } from '@/api/server/bonus'
 import { getLoyaltyTiers } from '@/api/server/loyalty-tier'
 import { getSettings } from '@/api/server/settings'
-import { SiteSettings } from '@/types/site-settings'
 
 import { InitialSettingsContextProvider } from '@/context/initial-settings-context'
+
+import {
+  resolveSiteLogoUrl,
+  SITE_BRAND_LOGO_SYMBOL_URL,
+  SITE_BRAND_LOGO_URL,
+} from '@/lib/site-brand-defaults'
 
 import ServerError from '@/components/error/ServerError'
 import MainLayout from '@/components/layout/main-layout/main-layout'
@@ -13,14 +18,16 @@ import MainLoading from '@/components/templates/loading/main-loading'
 
 import Providers from '@/app/providers'
 
+import { SiteSettings } from '@/types/site-settings'
+
 const defaultSettings: SiteSettings = {
   depositMinAmount: 10,
   withdrawMinAmount: 10,
   withdrawMaxAmount: 10000,
   termsCondition: '',
   socialMediaSetting: {
-    logo: '/images/small-logo-32.png',
-    logoSymbol: '/images/small-logo-32.png',
+    logo: SITE_BRAND_LOGO_URL,
+    logoSymbol: SITE_BRAND_LOGO_SYMBOL_URL,
     logoStyle: { height: 48, top: 0, left: 0 },
     logoSymbolStyle: { height: 48, top: 0, left: 0 },
     title: 'TwoX',
@@ -62,7 +69,25 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
     )
   }
 
-  const resolvedSettings = settingsResponse.settings || defaultSettings
+  const apiSettings = settingsResponse.settings as SiteSettings | undefined
+  const resolvedSettings: SiteSettings = apiSettings
+    ? {
+        ...defaultSettings,
+        ...apiSettings,
+        socialMediaSetting: {
+          ...defaultSettings.socialMediaSetting,
+          ...apiSettings.socialMediaSetting,
+          logo: resolveSiteLogoUrl(
+            apiSettings.socialMediaSetting?.logo,
+            defaultSettings.socialMediaSetting.logo
+          ),
+          logoSymbol: resolveSiteLogoUrl(
+            apiSettings.socialMediaSetting?.logoSymbol,
+            defaultSettings.socialMediaSetting.logoSymbol
+          ),
+        },
+      }
+    : defaultSettings
 
   const resolvedLoyaltyTiers = Array.isArray(loyaltyResponse.ranks)
     ? loyaltyResponse.ranks

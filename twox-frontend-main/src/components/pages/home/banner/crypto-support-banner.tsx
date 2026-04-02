@@ -1,20 +1,20 @@
 'use client'
 
-import React from 'react'
-import { ChevronDown } from 'lucide-react'
-
-import { useModal, ModalType, AUTH_TABS } from '@/context/modal-context'
-import { useUser } from '@/context/user-context'
 import { t } from 'i18next'
+import { ChevronDown } from 'lucide-react'
+import React from 'react'
+
+import { AUTH_TABS,ModalType, useModal } from '@/context/modal-context'
+import { useUser } from '@/context/user-context'
 
 import { Button } from '@/components/ui/button'
 
-import UsdtIcon from '@/assets/currencies/usdt_white.svg'
-import TronIcon from '@/assets/currencies/tron_white.svg'
-import XrpIcon from '@/assets/currencies/xrp_white.svg'
-import EthIcon from '@/assets/currencies/eth_white.svg'
-import BtcIcon from '@/assets/currencies/btc_white.svg'
 import BnbIcon from '@/assets/currencies/bnb_white.svg'
+import BtcIcon from '@/assets/currencies/btc_white.svg'
+import EthIcon from '@/assets/currencies/eth_white.svg'
+import TronIcon from '@/assets/currencies/tron_white.svg'
+import UsdtIcon from '@/assets/currencies/usdt_white.svg'
+import XrpIcon from '@/assets/currencies/xrp_white.svg'
 
 export default function CryptoSupportBanner() {
   const { setIsOpen, setType, setActiveTab } = useModal()

@@ -3,17 +3,17 @@
  * Fetches real-time balances for wallet addresses across different blockchains
  */
 
-import { createPublicClient, http, formatEther } from 'viem'
+import { createPublicClient, formatEther,http } from 'viem'
 import {
-  mainnet,
-  polygon,
   arbitrum,
   avalanche,
-  bsc,
-  optimism,
   base,
-  linea,
+  bsc,
   fantom,
+  linea,
+  mainnet,
+  optimism,
+  polygon,
 } from 'viem/chains'
 
 // Chain configurations

@@ -10,7 +10,8 @@ export const loginSchema = yup
     password: yup
       .string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters'),
+      .min(8, 'Password must be at least 8 characters')
+      .max(30, 'Password must be at most 30 characters'),
   })
   .required()
 
@@ -24,11 +25,20 @@ export const registerSchema = yup
       .string()
       .required('Email is required')
       .email('Please enter a valid email'),
-    username: yup.string().required('Username is required'),
+    username: yup
+      .string()
+      .required('Username is required')
+      .min(3, 'Username must be at least 3 characters')
+      .max(16, 'Username must be at most 16 characters')
+      .matches(
+        /^[a-zA-Z0-9_]+$/,
+        'Username can only contain letters, numbers, and underscores'
+      ),
     password: yup
       .string()
       .required('Password is required')
-      .min(6, 'Password must be at least 6 characters')
+      .min(8, 'Password must be at least 8 characters')
+      .max(30, 'Password must be at most 30 characters')
       .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
       .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
       .matches(/[0-9]/, 'Password must contain at least one number')

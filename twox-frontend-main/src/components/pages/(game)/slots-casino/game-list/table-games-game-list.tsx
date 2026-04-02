@@ -1,26 +1,27 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import Image from 'next/image'
+import React, { useEffect, useMemo,useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { getGames } from '@/api/game'
-import Banner from '@/components/pages/home/banner/banner'
-import GameGridLoader from '@/components/templates/loading/game-grid-loader'
-import GamePageLoader from '@/components/templates/loading/game-page-loader'
+
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
+import Banner from '@/components/pages/home/banner/banner'
+import ContentSectionDisplay from '@/components/templates/content-section/content-section'
 import GamingRanking from '@/components/templates/game-rank-table/game-rank-table'
 import LatestWinners from '@/components/templates/latest-winners/latest-winners'
+import GameGridLoader from '@/components/templates/loading/game-grid-loader'
+import GamePageLoader from '@/components/templates/loading/game-page-loader'
 import ProviderSection from '@/components/templates/provider-section/provider-section'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 
+import plusIcon from '@/assets/icons/plusicon.png'
+
 import { ProviderGameType, TProviderGameItem } from '@/types/game'
 import { TPagination } from '@/types/pagination'
-
-import plusIcon from '@/assets/icons/plusicon.png'
-import Image from 'next/image'
-import ContentSectionDisplay from '@/components/templates/content-section/content-section'
 
 export default function TableGamesGameList() {
   const [games, setGames] = useState<TProviderGameItem[]>([])

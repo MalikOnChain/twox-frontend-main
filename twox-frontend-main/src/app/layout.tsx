@@ -41,9 +41,10 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   // robots: { index: true, follow: true },
   icons: {
-    icon: '/images/small-logo-32.png',
-    // shortcut: '/favicon/favicon-16x16.png',
-    // apple: '/favicon/apple-touch-icon.png',
+    icon: [
+      { url: '/twox-logo.png', type: 'image/png' },
+      { url: '/favicon/favicon.svg', type: 'image/svg+xml' },
+    ],
   },
   manifest: '/favicon/site.webmanifest',
   // openGraph: {

@@ -17,6 +17,7 @@ import recommendedImage from '@/assets/banner/icon/recommended.png'
 import rouletteImage from '@/assets/banner/icon/roulette.png'
 import slotIcon from '@/assets/banner/icon/slots.png'
 import tableGameImage from '@/assets/banner/icon/tableGames.png'
+import bannerStripBg from '@/assets/header-bg.png'
 import bannerImage from '@/assets/header-img.png'
 
 const Banner = () => {
@@ -106,7 +107,10 @@ const Banner = () => {
 
   return (
     <div className='mb-7 rounded-2xl bg-custom-dual-gradient'>
-      <div className='mb-6 flex h-24 w-full items-center justify-between rounded-2xl border border-mirage bg-[url("/background/banner-bg.png")] bg-cover bg-center bg-no-repeat pl-4 pr-3 md:h-[133px] md:pl-8'>
+      <div
+        className='mb-6 flex h-24 w-full items-center justify-between rounded-2xl border border-mirage bg-cover bg-center bg-no-repeat pl-4 pr-3 md:h-[133px] md:pl-8'
+        style={{ backgroundImage: `url(${bannerStripBg.src})` }}
+      >
         <div className='flex items-center gap-4'>
           <Image src={getBanner().icon} alt='popular' width={36} height={36} />
           <h1 className='font-satoshi text-2xl font-bold text-white md:text-[32px]'>

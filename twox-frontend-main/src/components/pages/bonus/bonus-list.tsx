@@ -1,7 +1,7 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 
-import { getAllBonuses, Bonus as BonusType } from '@/api/bonus'
+import { Bonus as BonusType,getAllBonuses } from '@/api/bonus'
 
 import BonusItem from '@/components/pages/bonus/bonus-item'
 import WelcomeBonus from '@/components/pages/bonus/welcome-bonus'

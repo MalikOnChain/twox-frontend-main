@@ -8,13 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useInitialSettingsContext } from '@/context/initial-settings-context'
 
-import { getLogo } from '@/lib/logo'
-
-import chatIcon from '@/assets/icons/chat.png'
-import FacebookIcon from '@/assets/social/facebook.svg'
-import InstagramIcon from '@/assets/social/instagram.svg'
-import LinkedinIcon from '@/assets/social/linked-in.svg'
-import XIcon from '@/assets/social/x.svg'
+import { TawkChatModal } from '@/components/modals/tawk-chat-modal'
 
 // Cryptocurrency logos
 import bitcoinLogo from '@/assets/footer/bitcoin.png'
@@ -24,16 +18,17 @@ import etheriumLogo from '@/assets/footer/etherium.png'
 import litecoinLogo from '@/assets/footer/litecoin.png'
 import solanaLogo from '@/assets/footer/solana.png'
 import tetherLogo from '@/assets/footer/tether.png'
+import chatIcon from '@/assets/icons/chat.png'
+import FacebookIcon from '@/assets/social/facebook.svg'
+import InstagramIcon from '@/assets/social/instagram.svg'
+import LinkedinIcon from '@/assets/social/linked-in.svg'
+import XIcon from '@/assets/social/x.svg'
 
 import { Button } from '../../ui/button'
-import { TawkChatModal } from '@/components/modals/tawk-chat-modal'
-
-const eventName = 'easter'
 
 const Footer = () => {
   const { t } = useTranslation()
   // const year = new Date().getFullYear()
-  const { logo } = getLogo(eventName)
   const { settings } = useInitialSettingsContext()
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [chatModalOpen, setChatModalOpen] = useState(false)

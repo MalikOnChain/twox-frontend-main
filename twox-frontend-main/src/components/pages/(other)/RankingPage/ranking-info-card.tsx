@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useInitialSettingsContext } from '@/context/initial-settings-context'
 import { useProfile } from '@/context/data/profile-context'
+import { useInitialSettingsContext } from '@/context/initial-settings-context'
 
 import { formatNumber } from '@/lib/number'
 import { cn } from '@/lib/utils'

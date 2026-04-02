@@ -2,12 +2,7 @@
 
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
-import { useUser } from '@/context/user-context'
-
 import {
-  CRYPTO_SYMBOLS,
-  CRYPTO_TOKENS,
-  getCoinNetworkData,
   WALLET_MODAL_TABS,
 } from '@/lib/crypto'
 
@@ -39,11 +34,7 @@ export function WalletModalProvider({
   )
   const [activeCrypto, setActiveCrypto] = useState<CoinNetworkData | null>(null)
 
-  // Coinsbuy integration - no need for deposit addresses
-  // The cryptoList is now populated from Coinsbuy supported currencies
   const cryptoList = useMemo(() => {
-    // Return empty array - Coinsbuy handles currency selection dynamically
-    // This maintains compatibility with existing components while using Coinsbuy
     return []
   }, [])
 

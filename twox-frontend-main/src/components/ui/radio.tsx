@@ -10,9 +10,9 @@ interface ToggleRadioProps {
 
 const Radio = ({ label, isOn, onChange, name, subLabel }: ToggleRadioProps) => {
   return (
-    <div className='flex items-center gap-2.5'>
+    <div className='flex items-center gap-4'>
       {/* Toggle Switch */}
-      <div className='relative'>
+      <div className='relative shrink-0'>
         <input
           type='radio'
           name={name}
@@ -54,13 +54,13 @@ const Radio = ({ label, isOn, onChange, name, subLabel }: ToggleRadioProps) => {
       </div>
 
       {/* Label */}
-      <div>
-        <p className='font-satoshi text-sm font-normal text-white'>{label}</p>
-        {subLabel && (
-          <p className='font-satoshi text-sm font-normal text-white'>
+      <div className='min-w-0 flex-1 py-0.5'>
+        <p className='font-satoshi text-sm font-medium leading-snug text-white'>{label}</p>
+        {subLabel ? (
+          <p className='mt-1 font-satoshi text-xs font-normal leading-relaxed text-[#ABAAAD]'>
             {subLabel}
           </p>
-        )}
+        ) : null}
       </div>
     </div>
   )

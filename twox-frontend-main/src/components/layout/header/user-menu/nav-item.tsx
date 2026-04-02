@@ -2,7 +2,6 @@ import Link from 'next/link'
 import React, { forwardRef, LegacyRef } from 'react'
 
 import { useMenu } from '@/context/menu-context'
-import { ModalType, useModal } from '@/context/modal-context'
 import { useSocket } from '@/context/socket-context'
 import { useUser } from '@/context/user-context'
 
@@ -16,13 +15,11 @@ interface NavItemProps extends TNavItem {
 }
 
 const NavItem = forwardRef(
-  ({ icon, to, name, onClose }: NavItemProps, ref: LegacyRef<any>) => {
+  ({ icon, to, name, onClose, openInNewTab }: NavItemProps, ref: LegacyRef<any>) => {
     const Icon = icon as any
     const { logout } = useUser()
     const { socket } = useSocket(SOCKET_NAMESPACES.USER)
     const { setIsOpen } = useMenu()
-    const { setType, setIsOpen: setModalOpen } = useModal()
-
     const handleLogout = () => {
       logout()
       if (socket) {
@@ -34,30 +31,6 @@ const NavItem = forwardRef(
 
     const handleLogoutClick = () => {
       handleLogout()
-    }
-
-    const handleWalletClick = () => {
-      setType(ModalType.Balance)
-      setModalOpen(true)
-      onClose?.()
-      setIsOpen(false)
-    }
-
-    // Handle wallet option specially
-    if (name.toLowerCase().includes('wallet') && !name.toLowerCase().includes('connect')) {
-      return (
-        <div
-          ref={ref}
-          className={cn(
-            'flex cursor-pointer items-center gap-2 rounded-lg p-2.5 text-sm font-medium text-muted-foreground',
-            'hover:bg-mirage hover:text-foreground'
-          )}
-          onClick={handleWalletClick}
-        >
-          {icon && <Icon className='size-4' />}
-          {name}
-        </div>
-      )
     }
 
     if (!to) {
