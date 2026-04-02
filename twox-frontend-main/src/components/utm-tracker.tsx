@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-import { baseUrl } from '@/api/server/consts'
+import { getBrowserApiBaseUrl } from '@/lib/api-base-url'
 
 export default function UTMTracker() {
   const hasTracked = useRef(false)
@@ -22,6 +22,9 @@ export default function UTMTracker() {
     if (!utmSource || !utmCampaign) {
       return
     }
+
+    const baseUrl = getBrowserApiBaseUrl()
+    if (!baseUrl) return
 
     const endpoint = '/utm-visitor'
     const response = await fetch(`${baseUrl}${endpoint}`, {

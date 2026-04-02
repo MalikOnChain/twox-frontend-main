@@ -8,6 +8,19 @@ const withBundleAnalyzer = nextBundleAnalyzer({
 })
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Same-origin API proxy: set BACKEND_PROXY_TARGET=https://your-api.com/api and NEXT_PUBLIC_USE_API_PROXY=1
+  async rewrites() {
+    const raw = process.env.BACKEND_PROXY_TARGET?.trim()
+    if (process.env.NEXT_PUBLIC_USE_API_PROXY === '1' && !raw) {
+      console.warn(
+        '[next.config] NEXT_PUBLIC_USE_API_PROXY=1 but BACKEND_PROXY_TARGET is unset; API rewrites disabled.'
+      )
+    }
+    if (!raw) return []
+    const base = raw.replace(/\?+$/, '').replace(/\/$/, '')
+    return [{ source: '/_api/:path*', destination: `${base}/:path*` }]
+  },
+
   images: {
     remotePatterns: [
       // {

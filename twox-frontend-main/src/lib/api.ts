@@ -1,21 +1,23 @@
 // lib/api.ts
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 
+import { getBrowserApiBaseUrl } from '@/lib/api-base-url'
 import storageHandler from '@/lib/storage-utils'
 
 // Token management with type safety
 const tokenStorage = storageHandler({ key: 'token' })
 const referralCodeStorage = storageHandler({ key: 'ref' })
 
-// Environment variables
-export const API_URL = process.env.NEXT_PUBLIC_BACKEND_API
-if (!API_URL) {
-  console.warn('Backend API URL is not defined in environment variables')
+export const API_URL = getBrowserApiBaseUrl()
+if (typeof window !== 'undefined' && !API_URL) {
+  console.warn(
+    'Backend API URL is not configured. Set NEXT_PUBLIC_BACKEND_API, or NEXT_PUBLIC_USE_API_PROXY=1 with BACKEND_PROXY_TARGET (see next.config.mjs).'
+  )
 }
 
 // Create and configure axios instance
 export const api: AxiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL || undefined,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -45,6 +47,13 @@ function isAuthCredentialRequest(config: { method?: string; url?: string }): boo
  */
 api.interceptors.request.use(
   (request) => {
+    if (typeof window !== 'undefined' && !getBrowserApiBaseUrl()) {
+      return Promise.reject(
+        new Error(
+          'API is not configured (NEXT_PUBLIC_BACKEND_API or NEXT_PUBLIC_USE_API_PROXY + BACKEND_PROXY_TARGET).'
+        )
+      )
+    }
     const token = tokenStorage.getValue()
     if (token) {
       request.headers['x-auth-token'] = `${token}`

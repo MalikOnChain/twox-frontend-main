@@ -19,11 +19,21 @@ interface SiteConfig {
   url: string
 }
 
+function defaultSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  if (explicit) return explicit
+  if (process.env.VERCEL_URL) {
+    const host = process.env.VERCEL_URL.replace(/^https?:\/\//, '')
+    return `https://${host}`
+  }
+  return 'http://localhost:3000'
+}
+
 const siteConfig: SiteConfig = {
   title: 'Two X',
   description:
     'Two X is a premier online casino offering an exciting range of crypto-based games, including slots, blackjack, roulette, and more. Play, stake, and win with secure, fast, and rewarding gameplay. Join today for the ultimate online gaming experience.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  url: defaultSiteUrl(),
 }
 
 export const viewport: Viewport = {

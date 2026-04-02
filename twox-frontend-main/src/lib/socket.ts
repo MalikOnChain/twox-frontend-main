@@ -1,5 +1,7 @@
 import { Socket } from 'socket.io-client'
 import { toast } from 'sonner'
+
+import { getSocketHttpOrigin } from '@/lib/api-base-url'
 // socket-types.ts
 export const PUBLIC_SOCKET_NAMESPACES = {
   DEFAULT: '/',
@@ -206,7 +208,4 @@ export class EnhancedSocket {
   }
 }
 
-export const getSocketUrl = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API || ''
-  return baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl
-}
+export const getSocketUrl = () => getSocketHttpOrigin()

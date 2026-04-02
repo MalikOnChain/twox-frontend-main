@@ -88,6 +88,9 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     (namespace: string, isAuthenticated: boolean) => {
       const config = createSocketConfig(isAuthenticated)
       const baseUrl = getSocketUrl()
+      if (!baseUrl) {
+        return new EnhancedSocket(null, isAuthenticated, namespace)
+      }
       const partIo = io(baseUrl + namespace, config)
       const enhancedSocket = new EnhancedSocket(
         partIo,

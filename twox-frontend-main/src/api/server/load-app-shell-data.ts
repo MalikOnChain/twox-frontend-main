@@ -1,3 +1,8 @@
+import {
+  isLocalhostApiBase,
+  isSameOriginApiProxyEnabled,
+} from '@/lib/api-base-url'
+
 import { getBonuses } from './bonus'
 import { getLoyaltyTiers } from './loyalty-tier'
 import { getSettings } from './settings'
@@ -12,13 +17,12 @@ async function readJsonSafe(res: Response): Promise<Record<string, unknown>> {
   }
 }
 
-/** Vercel cannot reach the developer machine; avoid slow failing fetches to localhost. */
+/** Vercel cannot reach the dev machine or a missing API URL; avoid useless fetches. */
 function shouldUseShellFallbackWithoutFetch(): boolean {
   if (process.env.VERCEL !== '1') return false
-  const base =
-    process.env.NEXT_PUBLIC_BACKEND_API || 'http://localhost:5000/api'
-  const u = base.toLowerCase()
-  return u.includes('localhost') || u.includes('127.0.0.1')
+  if (isSameOriginApiProxyEnabled()) return false
+  if (!process.env.NEXT_PUBLIC_BACKEND_API?.trim()) return true
+  return isLocalhostApiBase()
 }
 
 export type AppShellData = {

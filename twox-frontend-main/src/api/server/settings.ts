@@ -1,7 +1,12 @@
-// app/lib/loyalty.ts
-import { baseUrl } from './consts'
+import {
+  getServerFetchApiBase,
+  shellStubJsonResponse,
+} from '@/lib/api-base-url'
 
 export const getSettings = async () => {
+  const baseUrl = getServerFetchApiBase()
+  if (!baseUrl) return shellStubJsonResponse()
+
   const endpoint = '/settings'
   const response = await fetch(`${baseUrl}${endpoint}`, {
     headers: {
