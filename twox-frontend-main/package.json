@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit",
     "build": "next build",
     "start": "next start -p 3000",
-    "prepare": "husky install",
+    "prepare": "node scripts/prepare-husky.cjs",
     "commit": "git-cz",
     "commit:verify": "git-cz --verify"
   },
