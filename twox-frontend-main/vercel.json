@@ -1,17 +1,5 @@
 {
   "installCommand": "npm install --legacy-peer-deps",
-  "redirects": [
-    {
-      "source": "/settings",
-      "destination": "/settings/general",
-      "permanent": false
-    },
-    {
-      "source": "/settings/",
-      "destination": "/settings/general",
-      "permanent": false
-    }
-  ],
   "build": {
     "env": {
       "HUSKY": "0"

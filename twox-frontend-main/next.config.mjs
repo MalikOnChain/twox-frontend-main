@@ -33,12 +33,13 @@ if (
   process.env.VERCEL === '1' &&
   !process.env.VERCEL_IGNORE_API_ENV_CHECK
 ) {
+  // Do not throw: missing NEXT_PUBLIC_* at build time breaks Production deploys if env is mis-scoped
+  // (e.g. only Preview). Runtime and api.ts already surface a clear error for users.
   if (!resolvedClientApiBase) {
-    throw new Error(
-      '[next.config] This app needs a backend URL in the client bundle. Set NEXT_PUBLIC_BACKEND_API ' +
-        '(e.g. https://your-api.com/api) or set BACKEND_PROXY_TARGET to that same API base (it will be mirrored ' +
-        'into the client when NEXT_PUBLIC_BACKEND_API is unset). If you use the proxy, also set NEXT_PUBLIC_USE_API_PROXY=1. ' +
-        'Configure these in Vercel → Project Settings → Environment Variables, then redeploy.'
+    console.warn(
+      '[next.config] No backend URL for the client bundle on Vercel. Set NEXT_PUBLIC_BACKEND_API ' +
+        '(e.g. https://your-api.onrender.com/api) or BACKEND_PROXY_TARGET to the same API base ' +
+        '(and NEXT_PUBLIC_USE_API_PROXY=1 for the /_api proxy). Add for Production and redeploy.'
     )
   }
   if (useApiProxy && !backendProxyTarget) {
