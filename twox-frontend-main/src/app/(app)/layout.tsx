@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react'
 
-import { getBonuses } from '@/api/server/bonus'
-import { getLoyaltyTiers } from '@/api/server/loyalty-tier'
-import { getSettings } from '@/api/server/settings'
+import { loadAppShellData } from '@/api/server/load-app-shell-data'
 
 import { InitialSettingsContextProvider } from '@/context/initial-settings-context'
 
@@ -48,25 +46,27 @@ const defaultSettings: SiteSettings = {
 }
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
-  const settingsRes = await getSettings()
-  const settingsResponse = await settingsRes.json()
+  const {
+    responses,
+    settingsResponse,
+    loyaltyResponse,
+    bonusesResponse,
+  } = await loadAppShellData()
 
-  const loyaltyRes = await getLoyaltyTiers()
-  const loyaltyResponse = await loyaltyRes.json()
-
-  const bonusesRes = await getBonuses()
-  const bonusesResponse = await bonusesRes.json()
-
-  if (!settingsRes.ok || !loyaltyRes.ok || !bonusesRes.ok) {
-    return (
-      <ServerError
-        error={
-          settingsResponse.error ||
-          loyaltyResponse.error ||
-          bonusesResponse.error
-        }
-      />
-    )
+  if (responses) {
+    const [settingsRes, loyaltyRes, bonusesRes] = responses
+    if (!settingsRes.ok || !loyaltyRes.ok || !bonusesRes.ok) {
+      return (
+        <ServerError
+          error={String(
+            settingsResponse.error ??
+              loyaltyResponse.error ??
+              bonusesResponse.error ??
+              'Request failed',
+          )}
+        />
+      )
+    }
   }
 
   const apiSettings = settingsResponse.settings as SiteSettings | undefined
