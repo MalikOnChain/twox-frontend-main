@@ -10,13 +10,64 @@ const withBundleAnalyzer = nextBundleAnalyzer({
 const backendProxyTarget = process.env.BACKEND_PROXY_TARGET?.trim() || ''
 const publicBackendProxyTarget =
   process.env.NEXT_PUBLIC_BACKEND_PROXY_TARGET?.trim() || ''
+const explicitPublicBackendApi =
+  process.env.NEXT_PUBLIC_BACKEND_API?.trim() || ''
+
+/** Normalize API base (no trailing ? or /) for env injection. */
+function normalizeApiBase(raw) {
+  return raw.replace(/\?+$/, '').replace(/\/$/, '')
+}
+
+// If NEXT_PUBLIC_BACKEND_API is omitted, derive it from BACKEND_PROXY_TARGET so Vercel can use one variable
+// for rewrites and still embed a client API base (sockets, mixed-content hints, direct mode without proxy).
+const inferredPublicBackendApi = backendProxyTarget
+  ? normalizeApiBase(backendProxyTarget)
+  : ''
+
+const resolvedClientApiBase =
+  explicitPublicBackendApi || inferredPublicBackendApi
+
+const useApiProxy = process.env.NEXT_PUBLIC_USE_API_PROXY === '1'
+
+if (
+  process.env.VERCEL === '1' &&
+  !process.env.VERCEL_IGNORE_API_ENV_CHECK
+) {
+  if (!resolvedClientApiBase) {
+    throw new Error(
+      '[next.config] This app needs a backend URL in the client bundle. Set NEXT_PUBLIC_BACKEND_API ' +
+        '(e.g. https://your-api.com/api) or set BACKEND_PROXY_TARGET to that same API base (it will be mirrored ' +
+        'into the client when NEXT_PUBLIC_BACKEND_API is unset). If you use the proxy, also set NEXT_PUBLIC_USE_API_PROXY=1. ' +
+        'Configure these in Vercel → Project Settings → Environment Variables, then redeploy.'
+    )
+  }
+  if (useApiProxy && !backendProxyTarget) {
+    throw new Error(
+      '[next.config] NEXT_PUBLIC_USE_API_PROXY=1 requires BACKEND_PROXY_TARGET on Vercel.'
+    )
+  }
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Socket.IO runs against the real backend origin; expose proxy target to the client when only BACKEND_PROXY_TARGET is set (server-only by default).
+  // Mirror server-only proxy target into NEXT_PUBLIC_* for Socket.IO; infer NEXT_PUBLIC_BACKEND_API when omitted.
   env: {
     NEXT_PUBLIC_BACKEND_PROXY_TARGET:
       publicBackendProxyTarget || backendProxyTarget,
+    ...(!explicitPublicBackendApi && inferredPublicBackendApi
+      ? { NEXT_PUBLIC_BACKEND_API: inferredPublicBackendApi }
+      : {}),
+  },
+
+  // Ensure /settings resolves even if the App Router index route is missing on some deploys (redirect runs at the edge).
+  async redirects() {
+    return [
+      {
+        source: '/settings',
+        destination: '/settings/general',
+        permanent: false,
+      },
+    ]
   },
 
   // Same-origin API proxy: set BACKEND_PROXY_TARGET=https://your-api.com/api and NEXT_PUBLIC_USE_API_PROXY=1

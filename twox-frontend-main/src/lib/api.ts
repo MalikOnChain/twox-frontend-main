@@ -54,7 +54,8 @@ api.interceptors.request.use(
   (request) => {
     if (typeof window !== 'undefined' && !getBrowserApiBaseUrl()) {
       const msg =
-        'API is not configured (NEXT_PUBLIC_BACKEND_API or NEXT_PUBLIC_USE_API_PROXY + BACKEND_PROXY_TARGET).'
+        'No backend URL is configured for the browser. Set NEXT_PUBLIC_BACKEND_API, or NEXT_PUBLIC_USE_API_PROXY=1 with BACKEND_PROXY_TARGET. ' +
+        'On Vercel, add these under Project → Settings → Environment Variables and redeploy.'
       toastApiUnreachable(msg)
       return Promise.reject(new ClientUnreachableApiError(msg))
     }

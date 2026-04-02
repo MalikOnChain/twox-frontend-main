@@ -215,7 +215,7 @@ export const useUserMenu = (): NavItem[] => {
     {
       icon: SettingsIcon,
       name: t('header.settings'),
-      to: `/settings`,
+      to: '/settings/general',
     },
     {
       icon: LiveSupportIcon,
