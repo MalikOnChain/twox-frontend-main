@@ -6,11 +6,22 @@ import nextBundleAnalyzer from '@next/bundle-analyzer'
 const withBundleAnalyzer = nextBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
+
+const backendProxyTarget = process.env.BACKEND_PROXY_TARGET?.trim() || ''
+const publicBackendProxyTarget =
+  process.env.NEXT_PUBLIC_BACKEND_PROXY_TARGET?.trim() || ''
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Socket.IO runs against the real backend origin; expose proxy target to the client when only BACKEND_PROXY_TARGET is set (server-only by default).
+  env: {
+    NEXT_PUBLIC_BACKEND_PROXY_TARGET:
+      publicBackendProxyTarget || backendProxyTarget,
+  },
+
   // Same-origin API proxy: set BACKEND_PROXY_TARGET=https://your-api.com/api and NEXT_PUBLIC_USE_API_PROXY=1
   async rewrites() {
-    const raw = process.env.BACKEND_PROXY_TARGET?.trim()
+    const raw = backendProxyTarget || undefined
     if (process.env.NEXT_PUBLIC_USE_API_PROXY === '1' && !raw) {
       console.warn(
         '[next.config] NEXT_PUBLIC_USE_API_PROXY=1 but BACKEND_PROXY_TARGET is unset; API rewrites disabled.'

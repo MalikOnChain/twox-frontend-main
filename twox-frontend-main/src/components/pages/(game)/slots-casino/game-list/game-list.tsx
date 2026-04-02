@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 
 import { useGameProvider } from '@/context/games/game-provider-context'
 
+import { isLikelyApiConnectivityMessage } from '@/lib/api-network-error'
 import { cn } from '@/lib/utils'
 
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
@@ -115,6 +116,7 @@ export default function GameList({
 
   useEffect(() => {
     if (!error) return
+    if (isLikelyApiConnectivityMessage(error)) return
     toast.error(error)
   }, [error])
 

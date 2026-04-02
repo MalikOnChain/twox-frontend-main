@@ -208,4 +208,17 @@ export class EnhancedSocket {
   }
 }
 
-export const getSocketUrl = () => getSocketHttpOrigin()
+let missingSocketOriginLogged = false
+
+export const getSocketUrl = (): string => {
+  const url = getSocketHttpOrigin()
+  if (!url && typeof window !== 'undefined' && !missingSocketOriginLogged) {
+    missingSocketOriginLogged = true
+    console.error(
+      '[TwoX Socket] No Socket.IO origin is configured. Real-time features are disabled. ' +
+        'Set NEXT_PUBLIC_BACKEND_ORIGIN or NEXT_PUBLIC_BACKEND_API, or with NEXT_PUBLIC_USE_API_PROXY=1 set BACKEND_PROXY_TARGET ' +
+        '(exposed to the client as NEXT_PUBLIC_BACKEND_PROXY_TARGET at build time) or NEXT_PUBLIC_BACKEND_PROXY_TARGET explicitly.'
+    )
+  }
+  return url
+}

@@ -18,6 +18,7 @@ import {
   setAuthSessionCookie,
   syncAuthSessionCookieFromStorage,
 } from '@/lib/auth-session-cookie'
+import { toastErrorUnlessConnectivityShown } from '@/lib/error-handler'
 import {
   BLOCKCHAIN_PROTOCOL_NAME,
   USDT_NETWORKS,
@@ -187,11 +188,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           checkAuth(response.identifier)
         }
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error('Failed to verify email!')
-        }
+        toastErrorUnlessConnectivityShown(error, 'Failed to verify email!')
       }
     },
     [checkAuth]

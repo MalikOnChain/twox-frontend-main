@@ -15,6 +15,8 @@ import 'swiper/css/navigation'
 
 import { getGames } from '@/api/game'
 
+import { toastErrorUnlessConnectivityShown } from '@/lib/error-handler'
+
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
 import GameGridLoader from '@/components/templates/loading/game-grid-loader'
 import { Button } from '@/components/ui/button'
@@ -49,11 +51,10 @@ const RecentSlots = () => {
           setGames((prev) => [...prev, ...data])
         }
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error('Error while getting recent slots game list')
-        }
+        toastErrorUnlessConnectivityShown(
+          error,
+          'Error while getting recent slots game list'
+        )
       } finally {
         setLoading(false)
       }

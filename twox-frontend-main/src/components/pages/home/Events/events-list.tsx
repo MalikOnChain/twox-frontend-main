@@ -2,12 +2,13 @@
 
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { toast } from 'sonner'
 import { Navigation } from 'swiper/modules'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { getWagerRaces } from '@/api/wagerRace'
+
+import { toastErrorUnlessConnectivityShown } from '@/lib/error-handler'
 
 import WagerRaceListLoader from '@/components/templates/loading/wagerRace-list-loader'
 
@@ -26,11 +27,10 @@ export default function EventsList() {
       const data = response.wagerRaces
       setWagerRaces(data)
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message)
-      } else {
-        toast.error('Error while getting recent slots game list')
-      }
+      toastErrorUnlessConnectivityShown(
+        error,
+        'Error while getting wager races'
+      )
     } finally {
       setLoading(false)
     }

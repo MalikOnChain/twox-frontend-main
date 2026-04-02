@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
 import type { Swiper as SwiperType } from 'swiper'
 import { Autoplay, Grid, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -14,6 +13,8 @@ import 'swiper/css/grid'
 import 'swiper/css/navigation'
 
 import { getGames } from '@/api/game'
+
+import { toastErrorUnlessConnectivityShown } from '@/lib/error-handler'
 
 import GamePreviewer from '@/components/pages/(game)/slots-casino/game/game-previewer'
 import GameGridLoader from '@/components/templates/loading/game-grid-loader'
@@ -74,11 +75,10 @@ const GameShows = () => {
           setGames((prev) => [...prev, ...data])
         }
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error('Error while getting game shows list')
-        }
+        toastErrorUnlessConnectivityShown(
+          error,
+          'Error while getting game shows list'
+        )
       } finally {
         setLoading(false)
       }

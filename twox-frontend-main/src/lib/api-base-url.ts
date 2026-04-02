@@ -1,4 +1,11 @@
 const DEFAULT_LOCAL_API = 'http://localhost:5000/api'
+const DEFAULT_LOCAL_SOCKET_ORIGIN = 'http://127.0.0.1:5000'
+
+/** Strip trailing `/api` (and slashes) so an API base URL becomes a Socket.IO HTTP origin. */
+function apiBaseToSocketOrigin(raw: string): string {
+  const normalized = raw.replace(/\?+$/, '').replace(/\/$/, '')
+  return normalized.endsWith('/api') ? normalized.slice(0, -4) : normalized
+}
 
 /** True when browser should call the backend through Next.js rewrites (same origin). */
 export function isSameOriginApiProxyEnabled(): boolean {
@@ -48,18 +55,30 @@ export function isLocalhostApiBase(): boolean {
   return u.includes('localhost') || u.includes('127.0.0.1')
 }
 
-/** Socket.IO origin (no `/api`). Requires direct backend URL when using proxy for HTTP. */
+/**
+ * Socket.IO origin (no `/api`). REST may use `/_api` while sockets must reach the real backend.
+ * When `NEXT_PUBLIC_USE_API_PROXY=1`, prefers `NEXT_PUBLIC_BACKEND_ORIGIN`, then `NEXT_PUBLIC_BACKEND_API`,
+ * then `NEXT_PUBLIC_BACKEND_PROXY_TARGET` (mirrors `BACKEND_PROXY_TARGET` via next.config.mjs `env`).
+ */
 export function getSocketHttpOrigin(): string {
-  const origin = process.env.NEXT_PUBLIC_BACKEND_ORIGIN?.trim()
-  if (origin) {
-    return origin.replace(/\?+$/, '').replace(/\/$/, '')
+  const explicitOrigin = process.env.NEXT_PUBLIC_BACKEND_ORIGIN?.trim()
+  if (explicitOrigin) {
+    return explicitOrigin.replace(/\?+$/, '').replace(/\/$/, '')
   }
   const api = process.env.NEXT_PUBLIC_BACKEND_API?.trim()
-  if (!api) return ''
-  const normalized = api.replace(/\?+$/, '').replace(/\/$/, '')
-  return normalized.endsWith('/api')
-    ? normalized.slice(0, -4)
-    : normalized
+  if (api) {
+    return apiBaseToSocketOrigin(api)
+  }
+  if (isSameOriginApiProxyEnabled()) {
+    const proxyTarget = process.env.NEXT_PUBLIC_BACKEND_PROXY_TARGET?.trim()
+    if (proxyTarget) {
+      return apiBaseToSocketOrigin(proxyTarget)
+    }
+    if (process.env.NODE_ENV === 'development') {
+      return DEFAULT_LOCAL_SOCKET_ORIGIN
+    }
+  }
+  return ''
 }
 
 /** SSR shell fetch when API base is unavailable (avoids throwing). */

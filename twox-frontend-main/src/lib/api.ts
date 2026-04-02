@@ -2,6 +2,11 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 
 import { getBrowserApiBaseUrl } from '@/lib/api-base-url'
+import {
+  ClientUnreachableApiError,
+  describeAxiosNetworkFailure,
+  toastApiUnreachable,
+} from '@/lib/api-network-error'
 import storageHandler from '@/lib/storage-utils'
 
 // Token management with type safety
@@ -48,11 +53,10 @@ function isAuthCredentialRequest(config: { method?: string; url?: string }): boo
 api.interceptors.request.use(
   (request) => {
     if (typeof window !== 'undefined' && !getBrowserApiBaseUrl()) {
-      return Promise.reject(
-        new Error(
-          'API is not configured (NEXT_PUBLIC_BACKEND_API or NEXT_PUBLIC_USE_API_PROXY + BACKEND_PROXY_TARGET).'
-        )
-      )
+      const msg =
+        'API is not configured (NEXT_PUBLIC_BACKEND_API or NEXT_PUBLIC_USE_API_PROXY + BACKEND_PROXY_TARGET).'
+      toastApiUnreachable(msg)
+      return Promise.reject(new ClientUnreachableApiError(msg))
     }
     const token = tokenStorage.getValue()
     if (token) {
@@ -88,9 +92,9 @@ api.interceptors.response.use(
   async (error: AxiosError): Promise<never> => {
     // Handle network errors (no response received)
     if (!error.response) {
-      return Promise.reject(
-        new Error('Network error: Please check your internet connection')
-      )
+      const msg = describeAxiosNetworkFailure(error)
+      toastApiUnreachable(msg)
+      return Promise.reject(new ClientUnreachableApiError(msg))
     }
 
     // Session invalid: only redirect if we actually had a token (guest 403s must surface errors, e.g. game list)

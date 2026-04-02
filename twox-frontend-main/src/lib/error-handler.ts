@@ -1,5 +1,14 @@
 // lib/errorHandler.ts
 import axios, { AxiosError } from 'axios'
+import { toast } from 'sonner'
+
+import {
+  ClientUnreachableApiError,
+  describeAxiosNetworkFailure,
+  isClientUnreachableApiError,
+  isLikelyApiConnectivityMessage,
+  toastApiUnreachable,
+} from '@/lib/api-network-error'
 
 export class ApiError extends Error {
   constructor(
@@ -11,10 +20,39 @@ export class ApiError extends Error {
   }
 }
 
+/** True when the axios layer already showed a deduplicated connectivity toast. */
+export function shouldSuppressConnectivityToast(error: unknown): boolean {
+  if (isClientUnreachableApiError(error)) return true
+  if (
+    error instanceof ApiError &&
+    error.statusCode === 0 &&
+    isLikelyApiConnectivityMessage(error.message)
+  ) {
+    return true
+  }
+  return false
+}
+
+export function toastErrorUnlessConnectivityShown(
+  error: unknown,
+  fallbackMessage = 'Something went wrong'
+): void {
+  if (shouldSuppressConnectivityToast(error)) return
+  if (error instanceof Error && error.message) {
+    toast.error(error.message)
+  } else {
+    toast.error(fallbackMessage)
+  }
+}
+
 export const handleApiError = (
   error: unknown,
   defaultMessage = 'An unexpected error occurred'
 ): never => {
+  if (isClientUnreachableApiError(error)) {
+    throw error
+  }
+
   // Handle Axios errors - check both instanceof and duck typing
   if (
     axios.isAxiosError(error) ||
@@ -27,9 +65,13 @@ export const handleApiError = (
   ) {
     const axiosError = error as AxiosError<{ error?: string; message?: string }>
 
-    // Handle network errors specifically
-    if (axiosError.code === 'ERR_NETWORK') {
-      throw new ApiError(axiosError.message || 'Network error occurred', 0)
+    if (!axiosError.response) {
+      const msg = describeAxiosNetworkFailure(axiosError)
+      if (typeof window !== 'undefined') {
+        toastApiUnreachable(msg)
+        throw new ClientUnreachableApiError(msg)
+      }
+      throw new ApiError(msg, 0)
     }
 
     const errorData = axiosError.response?.data

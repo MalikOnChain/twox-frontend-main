@@ -89,6 +89,12 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       const config = createSocketConfig(isAuthenticated)
       const baseUrl = getSocketUrl()
       if (!baseUrl) {
+        if (typeof window !== 'undefined') {
+          toast.error(
+            'Real-time updates are off: set NEXT_PUBLIC_BACKEND_ORIGIN or NEXT_PUBLIC_BACKEND_API, or BACKEND_PROXY_TARGET when using the /_api proxy.',
+            { id: 'twox-socket-no-origin', duration: 12_000 }
+          )
+        }
         return new EnhancedSocket(null, isAuthenticated, namespace)
       }
       const partIo = io(baseUrl + namespace, config)

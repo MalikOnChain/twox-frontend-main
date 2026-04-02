@@ -3,13 +3,13 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
 import type { Swiper as SwiperType } from 'swiper'
 import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { getGames } from '@/api/game'
 
+import { toastErrorUnlessConnectivityShown } from '@/lib/error-handler'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
@@ -65,11 +65,10 @@ const CasinoGameSlider = ({
           return shuffled.slice(0, 15)
         })
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error('Error while getting recent slots game list')
-        }
+        toastErrorUnlessConnectivityShown(
+          error,
+          'Error while getting recent slots game list'
+        )
       } finally {
         setLoading(false)
       }
