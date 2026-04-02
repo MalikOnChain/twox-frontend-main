@@ -7,6 +7,13 @@ const AUTH_SESSION_COOKIE_NAME = 'twox_auth'
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Runs before App Router (incl. client navigations). Fixes /settings 404 on some Vercel deploys.
+  if (pathname === '/settings' || pathname === '/settings/') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/settings/general'
+    return NextResponse.redirect(url)
+  }
+
   if (pathname.startsWith('/profile')) {
     const ok = request.cookies.get(AUTH_SESSION_COOKIE_NAME)?.value === '1'
     if (!ok) {

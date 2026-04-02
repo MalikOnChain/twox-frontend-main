@@ -1,5 +1,8 @@
 import { redirect } from 'next/navigation'
 
-export default function SettingsPage() {
+/** Avoid static prerender edge cases; middleware also sends /settings → /settings/general. */
+export const dynamic = 'force-dynamic'
+
+export default function SettingsIndexPage() {
   redirect('/settings/general')
 }
