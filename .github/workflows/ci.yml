@@ -36,13 +36,8 @@ jobs:
           cache: npm
           cache-dependency-path: twox-frontend-main/package-lock.json
 
-      - name: OS packages for native Node addons
-        run: sudo apt-get update && sudo apt-get install -y build-essential python3
-        env:
-          DEBIAN_FRONTEND: noninteractive
-
-      - name: Install (frozen lockfile)
-        run: npm ci
+      - name: Install (frozen lockfile, no lifecycle scripts)
+        run: npm ci --ignore-scripts
 
       - name: Typecheck
         run: npm run type-check
