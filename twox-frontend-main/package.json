@@ -120,7 +120,7 @@
     "pino-pretty": "^13.0.0",
     "postcss": "^8",
     "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.9",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "sharp": "^0.34.4",
     "tailwindcss": "^3.4.1",
     "tailwindcss-textshadow": "^2.1.3",
