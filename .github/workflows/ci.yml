@@ -1,5 +1,5 @@
 # App lives in twox-frontend-main/ — workflows must stay at repo root for GitHub to run them.
-# Local: cd twox-frontend-main && npm run verify
+# Local: cd twox-frontend-main && npm run ci   (build + Playwright browsers + E2E smoke)
 name: CI
 
 on:
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Install and production build
+    name: Install, build, and E2E smoke
     runs-on: ubuntu-latest
     timeout-minutes: 25
     defaults:
@@ -26,7 +26,8 @@ jobs:
         working-directory: twox-frontend-main
     env:
       CI: true
-      NEXT_PUBLIC_BACKEND_API: https://example.com/api
+      # Closed port: fail fast during SSR without TLS (avoids flaky https://example.com in CI).
+      NEXT_PUBLIC_BACKEND_API: http://127.0.0.1:59999/api
     steps:
       - uses: actions/checkout@v4
 
@@ -40,5 +41,5 @@ jobs:
         run: rm -rf node_modules && npm install --ignore-scripts --no-audit --no-fund
 
       # next build runs "Linting and checking validity of types" — standalone tsc can fail on CI while Next passes
-      - name: Production build
-        run: npm run build
+      - name: Build + Playwright smoke
+        run: npm run ci
