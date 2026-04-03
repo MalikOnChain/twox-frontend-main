@@ -90,7 +90,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
+    "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^16.2.4",
     "@svgr/webpack": "^8.1.0",
     "@types/canvas-confetti": "^1.9.0",
